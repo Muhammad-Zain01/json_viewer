@@ -5,11 +5,28 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const isJsonValid = (str: string) => {
+export const JsonParse = (jsonString: string) => {
   try {
-    JSON.parse(str);
-    return true; // Parsing succeeded, the string is valid JSON
-  } catch (e) {
-    return false; // Parsing failed, the string is not valid JSON
+    let JSON_STRING = jsonString.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "");
+    JSON_STRING = JSON_STRING.replace(/,\s*([\]}])/g, "$1");
+    JSON_STRING = JSON_STRING.replace(/\n/g, "").trim();
+
+    return {
+      success: true,
+      result: JSON.parse(JSON_STRING),
+      error: null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      result: null,
+      error: true,
+    };
   }
+};
+
+
+export const isJsonValid = (str: string) => {
+  const JsonData = JsonParse(str);
+  return JsonData.success;
 };
