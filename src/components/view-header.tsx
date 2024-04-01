@@ -61,7 +61,7 @@ const HeaderView = () => {
     setLoadModal(true);
   };
   return (
-    <div className="tw-mb-2 tw-border tw-p-1 tw-mr-1 tw-flex tw-items-center">
+    <div className="tw-mb-2  tw-border tw-p-1 tw-mr-1 tw-flex tw-items-center tw-flex-wrap">
       <Button
         size={"sm"}
         variant="ghost"

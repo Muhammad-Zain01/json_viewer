@@ -12,7 +12,7 @@ const JsonViewer = () => {
     if (openKeys.length) {
       ResetOpenKey();
     } else {
-      
+      // Enable All Open Keys
     }
   };
 
