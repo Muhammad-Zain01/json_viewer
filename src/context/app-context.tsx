@@ -1,3 +1,4 @@
+import { Pyramid } from "lucide-react";
 import { createContext, useContext, useReducer } from "react";
 
 const ReducerTypes = {
@@ -7,6 +8,7 @@ const ReducerTypes = {
   AddOpenKeys: "ADD_OPEN_KEYS",
   RemoveOpenKeys: "REMOVE_OPEN_KEYS",
   ResetOpenKeys: "RESET_OPEN_KEYS",
+  setLoadModal: "SET_LOAD_MODAL",
 };
 
 function CreateAction<Payload>(type: string, payload?: Payload) {
@@ -23,11 +25,15 @@ export type AlertBox = {
   title: string;
   message: string;
 };
+export type LoadModal = {
+  show: boolean;
+};
 export type ReducerState = {
   currentTab: CurrentTab;
   jsonData: string;
   alertBox: AlertBox;
   openKeys: string[];
+  loadModal: LoadModal;
 };
 export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
@@ -36,6 +42,7 @@ export type AppState = ReducerState & {
   AddOpenKey: (value: string) => void;
   RemoveOpenKey: (value: string) => void;
   ResetOpenKey: () => void;
+  setLoadModal: (value: boolean) => void;
 };
 
 const initialState: ReducerState = {
@@ -47,6 +54,9 @@ const initialState: ReducerState = {
     title: "",
     message: "",
   },
+  loadModal: {
+    show: false,
+  },
 };
 const defaultValue: AppState = {
   ...initialState,
@@ -56,6 +66,7 @@ const defaultValue: AppState = {
   AddOpenKey: (value: string) => {},
   RemoveOpenKey: (value: string) => {},
   ResetOpenKey: () => {},
+  setLoadModal: (value: boolean) => {},
 };
 
 const AppContext = createContext(defaultValue);
@@ -70,7 +81,7 @@ const AppReducer = (state: AppState, action: any) => {
     case ReducerTypes?.setJsonText:
       return {
         ...state,
-        jsonData: action?.payload,
+        jsonData: action?.payload ?? "",
       };
     case ReducerTypes?.setAlertBox:
       return {
@@ -92,6 +103,12 @@ const AppReducer = (state: AppState, action: any) => {
         ...state,
         openKeys: [],
       };
+
+    case ReducerTypes?.setLoadModal:
+      return {
+        ...state,
+        loadModal: action?.payload,
+      };
   }
 };
 
@@ -107,6 +124,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       dispatch(CreateAction<Payload>(type));
     }
   }
+
   const setCurrentTab = (tab: CurrentTab) =>
     Action<CurrentTab>(ReducerTypes?.setCurrentTab, tab);
 
@@ -124,6 +142,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const ResetOpenKey = () => Action(ReducerTypes?.ResetOpenKeys);
 
+  const setLoadModal = (value: boolean) =>
+    Action<LoadModal>(ReducerTypes?.setLoadModal, { show: value });
+
   const value = {
     ...state,
     setCurrentTab,
@@ -132,6 +153,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     AddOpenKey,
     RemoveOpenKey,
     ResetOpenKey,
+    setLoadModal,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

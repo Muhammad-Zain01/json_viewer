@@ -9,7 +9,7 @@ const JsonViewer = () => {
   if (Data?.success) {
     return (
       <div className="tw-mt-5 tw-m-2">
-        <div className="tw-border tw-rounded tw-p-2">
+        <div className="tw-border tw-rounded tw-p-2 tw-overflow-scroll">
           <JsonParser
             data={Data?.result}
             isArray={Array.isArray(Data?.result)}

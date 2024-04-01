@@ -1,13 +1,65 @@
+import { useApp } from "../context/app-context";
+import { FormatJsonString } from "../lib/utils";
 import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 
 const HeaderView = () => {
   const Seprator = <span className="tw-border-r tw-mx-1 tw-h-[25px]"></span>;
+  const { jsonData, setJsonText, setLoadModal } = useApp();
+  const { toast } = useToast();
 
-  const handleCopy = () => {};
-  const handlePaste = () => {};
-  const handleClear = () => {};
-  const handleRemoveWhiteSpace = () => {};
-  const handleLoadJsonData = () => {};
+  const handleCopy = () => {
+    navigator.clipboard.writeText(jsonData).then(
+      function () {
+        toast({
+          title: "Copied to clipboard",
+        });
+      },
+      function (err) {
+        toast({
+          variant: "destructive",
+          title: "Your browser does not support clipboard",
+          description: err.message,
+        });
+      }
+    );
+  };
+  const handlePaste = () => {
+    navigator.clipboard.readText().then(
+      function (text) {
+        setJsonText(text);
+      },
+      function (err) {
+        toast({
+          variant: "destructive",
+          title: "Your browser does not support paste from clipboard",
+          description: err.message,
+        });
+      }
+    );
+  };
+  const handleClear = () => {
+    setJsonText("");
+  };
+
+  const handleRemoveWhiteSpace = () => {
+    setJsonText(jsonData.replace(/\s+/g, ""));
+  };
+  const handleFormatJson = () => {
+    const Formated = FormatJsonString(jsonData);
+    if (Formated?.success) {
+      setJsonText(Formated.json);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid JSON",
+        description: "Your JSON structure is invalid",
+      });
+    }
+  };
+  const handleLoadJsonData = () => {
+    setLoadModal(true);
+  };
   return (
     <div className="tw-mb-2 tw-border tw-p-1 tw-mr-1 tw-flex tw-items-center">
       <Button
@@ -44,6 +96,15 @@ const HeaderView = () => {
         onClick={handleRemoveWhiteSpace}
       >
         Remove White Spaces
+      </Button>
+      {Seprator}
+      <Button
+        size={"sm"}
+        variant="ghost"
+        className="tw-text-[12px] tw-p-0"
+        onClick={handleFormatJson}
+      >
+        Format JSON
       </Button>
       {Seprator}
       <Button

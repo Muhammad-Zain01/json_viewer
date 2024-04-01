@@ -3,6 +3,7 @@ import JsonViewer from "./components/json-viewer";
 import TabView from "./components/tab-view";
 import { useApp } from "./context/app-context";
 import AlertBox from "./components/alert-box";
+import LoadJson from "./components/modal/load-json";
 function App() {
   const { currentTab } = useApp();
   return (
@@ -11,6 +12,7 @@ function App() {
       {currentTab == "viewer" && <JsonViewer />}
       {currentTab == "text" && <JsonTextBox />}
       <AlertBox />
+      <LoadJson />
     </div>
   );
 }
