@@ -2,12 +2,19 @@ import { ListTree } from "lucide-react";
 import { useApp } from "../context/app-context";
 import { JsonParse } from "../lib/utils";
 import JsonParser from "./json";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 const JsonViewer = () => {
-  const { jsonData } = useApp();
+  const { jsonData, openKeys, ResetOpenKey } = useApp();
   const Data = JsonParse(jsonData);
+
+  const handleToggleTree = () => {
+    if (openKeys.length) {
+      ResetOpenKey();
+    } else {
+      
+    }
+  };
 
   if (Data?.success) {
     return (
@@ -17,7 +24,10 @@ const JsonViewer = () => {
             <Input placeholder="Search ..." />
           </div>
           <div className="tw-flex tw-ml-5 tw-justify-between tw-items-center">
-            <span className="tw-inline-block tw-rounded tw-border tw-p-2 tw-mx-1 hover:tw-bg-gray-50">
+            <span
+              className="tw-inline-block tw-rounded tw-border tw-p-2 tw-mx-1 hover:tw-bg-gray-50"
+              onClick={handleToggleTree}
+            >
               <ListTree size={16} />
             </span>
           </div>
