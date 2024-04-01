@@ -14,7 +14,7 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
   isArray,
 }) => {
   return (
-    <span className="tw-cursor-pointer">
+    <div className=" tw-cursor-pointer">
       {isOpen ? (
         <JsonParser
           data={value}
@@ -24,7 +24,7 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
       ) : (
         <span>{isArray ? "[...]" : "{...}"} </span>
       )}
-    </span>
+    </div>
   );
 };
 

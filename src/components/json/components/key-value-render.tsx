@@ -38,7 +38,7 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   };
   return (
     <div
-      className={`tw-flex tw-items-start tw-mt-[1px] tw-pl-[${
+      className={`tw-flex tw-items-start tw-w-full tw-mt-[1px] tw-pl-[${
         indent * 10
       }px] tw-text-[15px]`}
     >
