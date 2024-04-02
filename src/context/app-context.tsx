@@ -1,5 +1,5 @@
-import { Pyramid } from "lucide-react";
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useMemo, useReducer } from "react";
+import { generateUUID } from "../lib/utils";
 
 const ReducerTypes = {
   setCurrentTab: "SET_CURRENT_TAB",
@@ -9,8 +9,25 @@ const ReducerTypes = {
   RemoveOpenKeys: "REMOVE_OPEN_KEYS",
   ResetOpenKeys: "RESET_OPEN_KEYS",
   setLoadModal: "SET_LOAD_MODAL",
+  setCurrentSelectedTab: "SET_CURRENT_SELECTED_TAB",
+  setJsonObject: "SET_JSON_OBJECT",
+  addTab: "ADD_TAB",
+  removeTab: "REMOVE_TAB",
+  setTabModal: "SET_TAB_MODAL",
 };
-
+const getData = () => {
+  try {
+    let data = localStorage.getItem("tabs-data");
+    if (data) {
+      console.log("data", data);
+      return JSON.parse(data);
+    } else {
+      return [];
+    }
+  } catch {
+    return [];
+  }
+};
 function CreateAction<Payload>(type: string, payload?: Payload) {
   if (payload) {
     return { type, payload };
@@ -28,12 +45,24 @@ export type AlertBox = {
 export type LoadModal = {
   show: boolean;
 };
-export type ReducerState = {
+
+export type Tabs = {
+  id: string;
+  jsonObject: any;
+  name: string;
   currentTab: CurrentTab;
   jsonData: string;
-  alertBox: AlertBox;
   openKeys: string[];
+};
+export type TabModal = {
+  show: boolean;
+};
+export type ReducerState = {
+  tabs: Tabs[];
+  alertBox: AlertBox;
   loadModal: LoadModal;
+  currentSelectedTab: string;
+  tabModal: TabModal;
 };
 export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
@@ -43,12 +72,15 @@ export type AppState = ReducerState & {
   RemoveOpenKey: (value: string) => void;
   ResetOpenKey: () => void;
   setLoadModal: (value: boolean) => void;
+  setCurrentSelectedTab: (id: string) => void;
+  setJsonObject: (jsonObject: any) => void;
+  removeTab: (id: string) => void;
+  setTabModal: (value: boolean) => void;
+  setAddTab: (value: string) => void;
 };
 
 const initialState: ReducerState = {
-  currentTab: "text",
-  jsonData: "",
-  openKeys: [],
+  tabs: getData(),
   alertBox: {
     show: false,
     title: "",
@@ -57,6 +89,21 @@ const initialState: ReducerState = {
   loadModal: {
     show: false,
   },
+  tabModal: {
+    show: false,
+  },
+  currentSelectedTab: "uuid-sample-here",
+};
+
+const generateNewTab = (name: string) => {
+  return {
+    id: generateUUID(),
+    name: name,
+    jsonObject: null,
+    currentTab: "text",
+    jsonData: "",
+    openKeys: [],
+  };
 };
 const defaultValue: AppState = {
   ...initialState,
@@ -67,6 +114,11 @@ const defaultValue: AppState = {
   RemoveOpenKey: (value: string) => {},
   ResetOpenKey: () => {},
   setLoadModal: (value: boolean) => {},
+  setCurrentSelectedTab: (id: string) => {},
+  setJsonObject: (jsonObject: any) => {},
+  removeTab: (id: string) => {},
+  setTabModal: (value: boolean) => {},
+  setAddTab: (value: string) => {},
 };
 
 const AppContext = createContext(defaultValue);
@@ -76,13 +128,23 @@ const AppReducer = (state: AppState, action: any) => {
     case ReducerTypes?.setCurrentTab:
       return {
         ...state,
-        currentTab: action?.payload,
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? { ...tab, currentTab: action?.payload }
+            : tab
+        ),
       };
+
     case ReducerTypes?.setJsonText:
       return {
         ...state,
-        jsonData: action?.payload ?? "",
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? { ...tab, jsonData: action?.payload ?? "" }
+            : tab
+        ),
       };
+
     case ReducerTypes?.setAlertBox:
       return {
         ...state,
@@ -91,17 +153,49 @@ const AppReducer = (state: AppState, action: any) => {
     case ReducerTypes?.AddOpenKeys:
       return {
         ...state,
-        openKeys: [...state.openKeys, action?.payload],
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? { ...tab, openKeys: [...tab.openKeys, action?.payload] }
+            : tab
+        ),
       };
+
+    case ReducerTypes?.setJsonObject:
+      return {
+        ...state,
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? { ...tab, jsonObject: action.payload }
+            : tab
+        ),
+      };
+
     case ReducerTypes?.RemoveOpenKeys:
       return {
         ...state,
-        openKeys: state.openKeys.filter((item) => item != action?.payload),
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? {
+                ...tab,
+                openKeys: tab.openKeys.filter(
+                  (item) => item != action?.payload
+                ),
+              }
+            : tab
+        ),
       };
+
     case ReducerTypes?.ResetOpenKeys:
       return {
         ...state,
-        openKeys: [],
+        tabs: state.tabs.map((tab) =>
+          tab.id == state?.currentSelectedTab
+            ? {
+                ...tab,
+                openKeys: [],
+              }
+            : tab
+        ),
       };
 
     case ReducerTypes?.setLoadModal:
@@ -109,13 +203,58 @@ const AppReducer = (state: AppState, action: any) => {
         ...state,
         loadModal: action?.payload,
       };
+
+    case ReducerTypes?.setTabModal:
+      return {
+        ...state,
+        tabModal: action?.payload,
+      };
+    case ReducerTypes?.setCurrentSelectedTab:
+      return {
+        ...state,
+        currentSelectedTab: action?.payload,
+      };
+    case ReducerTypes?.removeTab:
+      const updatedTab = state.tabs.filter((tab) => tab.id != action.payload);
+      if (action.payload == state.currentSelectedTab) {
+        return {
+          ...state,
+          tabs: updatedTab,
+          currentSelectedTab: updatedTab.length > 0 ? updatedTab[0].id : "",
+        };
+      } else {
+        return {
+          ...state,
+          tabs: updatedTab,
+        };
+      }
+
+    case ReducerTypes?.addTab:
+      return {
+        ...state,
+        tabs: [...state.tabs, generateNewTab(action?.payload)],
+      };
   }
+};
+const updateToLocalStorage = (state: AppState) => {
+  console.log(">>>", JSON.stringify(state.tabs));
+
+  return state;
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }): JSX.Element => {
-  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const [state, dispatch] = useReducer(
+    AppReducer,
+    initialState,
+    updateToLocalStorage
+  );
+
+  useMemo(
+    () => localStorage.setItem("tabs-data", JSON.stringify(state.tabs)),
+    [state]
+  );
 
   function Action<Payload>(type: string, payload?: Payload) {
     if (payload) {
@@ -128,6 +267,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const setCurrentTab = (tab: CurrentTab) =>
     Action<CurrentTab>(ReducerTypes?.setCurrentTab, tab);
 
+  const setJsonObject = (object: any) =>
+    Action<any>(ReducerTypes?.setJsonObject, object);
   const setJsonText = (text: string) =>
     Action<string>(ReducerTypes?.setJsonText, text);
 
@@ -145,15 +286,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const setLoadModal = (value: boolean) =>
     Action<LoadModal>(ReducerTypes?.setLoadModal, { show: value });
 
+  const setTabModal = (value: boolean) =>
+    Action<LoadModal>(ReducerTypes?.setTabModal, { show: value });
+
+  const setCurrentSelectedTab = (id: string) =>
+    Action<string>(ReducerTypes?.setCurrentSelectedTab, id);
+
+  const setAddTab = (value: string) =>
+    Action<string>(ReducerTypes?.addTab, value);
+
+  const removeTab = (id: string) => Action<string>(ReducerTypes?.removeTab, id);
   const value = {
     ...state,
     setCurrentTab,
+    removeTab,
     setJsonText,
     setAlertBox,
     AddOpenKey,
     RemoveOpenKey,
     ResetOpenKey,
     setLoadModal,
+    setTabModal,
+    setCurrentSelectedTab,
+    setJsonObject,
+    setAddTab,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

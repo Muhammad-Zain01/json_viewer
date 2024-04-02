@@ -1,4 +1,5 @@
 import { useApp } from "../../../context/app-context";
+import useData from "../../../hooks/useData";
 import JsonValue from "./json-label";
 import JsonLabel from "./json-label-object";
 import JsonObjectValue from "./json-value";
@@ -18,7 +19,8 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   level,
   row,
 }): JSX.Element => {
-  const { openKeys, AddOpenKey, RemoveOpenKey } = useApp();
+  const { AddOpenKey, RemoveOpenKey } = useApp();
+  const { openKeys } = useData();
   const UniqueId = `${row}-${level}`;
   const isOpen = openKeys.includes(UniqueId);
 

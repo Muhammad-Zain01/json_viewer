@@ -1,11 +1,13 @@
 import { useApp } from "../context/app-context";
+import useData from "../hooks/useData";
 import { FormatJsonString } from "../lib/utils";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
 const HeaderView = () => {
   const Seprator = <span className="tw-border-r tw-mx-1 tw-h-[25px]"></span>;
-  const { jsonData, setJsonText, setLoadModal } = useApp();
+  const { setJsonText, setLoadModal } = useApp();
+  const { jsonData } = useData();
   const { toast } = useToast();
 
   const handleCopy = () => {

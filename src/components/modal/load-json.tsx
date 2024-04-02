@@ -7,7 +7,6 @@ import {
   DialogFooter,
 } from "../ui/dialog";
 
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Input } from "../ui/input";
 import { useRef, useState } from "react";
