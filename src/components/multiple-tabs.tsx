@@ -29,8 +29,13 @@ const Tab: React.FC<{
 };
 
 const MultipleTabs = () => {
-  const { tabs, currentSelectedTab, setCurrentSelectedTab, removeTab } =
-    useApp();
+  const {
+    tabs,
+    currentSelectedTab,
+    setCurrentSelectedTab,
+    removeTab,
+    setTabModal,
+  } = useApp();
 
   return (
     <>
@@ -55,7 +60,10 @@ const MultipleTabs = () => {
             );
           })}
           <div className="tw-ml-2 tw-flex">
-            <span className="tw-p-2 tw-rounded tw-border hover:tw-bg-gray-100">
+            <span
+              className="tw-p-2 tw-rounded tw-border hover:tw-bg-gray-100"
+              onClick={() => setTabModal(true)}
+            >
               <Plus size={12} />
             </span>
           </div>

@@ -6,7 +6,6 @@ const JsonTextBox = () => {
   const { setJsonText } = useApp();
   const data = useData();
 
-  console.log(data);
   if (data) {
     const { jsonData } = data;
     return (
