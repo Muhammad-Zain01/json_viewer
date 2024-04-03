@@ -21,8 +21,9 @@ const JsonBreadCrumb = () => {
     const UniqueKeys =
       Array.isArray(data?.openKeys) &&
       data.openKeys.filter((item) => {
-        if (!seenIds.has(item.id)) {
-          seenIds.add(item.id);
+        const id = item.id.split("-")[1];
+        if (!seenIds.has(id)) {
+          seenIds.add(id);
           return true;
         }
         return false;
@@ -50,19 +51,6 @@ const JsonBreadCrumb = () => {
                   <BreadcrumbPage className="tw-text-xs tw-cursor-pointer">
                     {item}
                   </BreadcrumbPage>
-                </BreadcrumbItem>
-
-                <BreadcrumbItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1">
-                      asdf
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                      <DropdownMenuItem>Documentation</DropdownMenuItem>
-                      <DropdownMenuItem>Themes</DropdownMenuItem>
-                      <DropdownMenuItem>GitHub</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </BreadcrumbItem>
                 {!(idx == breadItems.length - 1) && <BreadcrumbSeparator />}
               </>
