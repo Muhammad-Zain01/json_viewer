@@ -1,25 +1,25 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 import { generateUUID } from "../lib/utils";
 
-const ReducerTypes = {
-  setCurrentTab: "SET_CURRENT_TAB",
-  setJsonText: "SET_JSON",
-  setAlertBox: "SET_ALERT_BOX",
-  AddOpenKeys: "ADD_OPEN_KEYS",
-  RemoveOpenKeys: "REMOVE_OPEN_KEYS",
-  ResetOpenKeys: "RESET_OPEN_KEYS",
-  setLoadModal: "SET_LOAD_MODAL",
-  setCurrentSelectedTab: "SET_CURRENT_SELECTED_TAB",
-  setJsonObject: "SET_JSON_OBJECT",
-  addTab: "ADD_TAB",
-  removeTab: "REMOVE_TAB",
-  setTabModal: "SET_TAB_MODAL",
-};
-const getData = () => {
+enum ReducerTypes {
+  setCurrentTab = "SET_CURRENT_TAB",
+  setJsonText = "SET_JSON",
+  setAlertBox = "SET_ALERT_BOX",
+  AddOpenKeys = "ADD_OPEN_KEYS",
+  RemoveOpenKeys = "REMOVE_OPEN_KEYS",
+  ResetOpenKeys = "RESET_OPEN_KEYS",
+  setLoadModal = "SET_LOAD_MODAL",
+  setCurrentSelectedTab = "SET_CURRENT_SELECTED_TAB",
+  setJsonObject = "SET_JSON_OBJECT",
+  addTab = "ADD_TAB",
+  removeTab = "REMOVE_TAB",
+  setTabModal = "SET_TAB_MODAL",
+}
+
+const getData = (): Tabs[] => {
   try {
     let data = localStorage.getItem("tabs-data");
     if (data) {
-      console.log("data", data);
       return JSON.parse(data);
     } else {
       return [];
@@ -28,12 +28,12 @@ const getData = () => {
     return [];
   }
 };
-function CreateAction<Payload>(type: string, payload?: Payload) {
-  if (payload) {
-    return { type, payload };
-  } else {
-    return { type };
-  }
+
+function CreateAction<Type extends ReducerTypes, Payload>(
+  type: Type,
+  payload?: Payload
+) {
+  return payload !== undefined ? { type, payload } : { type };
 }
 
 export type CurrentTab = "text" | "viewer";
@@ -57,6 +57,12 @@ export type Tabs = {
 export type TabModal = {
   show: boolean;
 };
+
+type AppAction = {
+  type: ReducerTypes;
+  payload?: any;
+};
+
 export type ReducerState = {
   tabs: Tabs[];
   alertBox: AlertBox;
@@ -95,7 +101,7 @@ const initialState: ReducerState = {
   currentSelectedTab: "uuid-sample-here",
 };
 
-const generateNewTab = (name: string) => {
+const generateNewTab = (name: string): Tabs => {
   return {
     id: generateUUID(),
     name: name,
@@ -107,23 +113,23 @@ const generateNewTab = (name: string) => {
 };
 const defaultValue: AppState = {
   ...initialState,
-  setCurrentTab: (tab: CurrentTab) => {},
-  setJsonText: (text: string) => {},
-  setAlertBox: (box: AlertBox) => {},
-  AddOpenKey: (value: string) => {},
-  RemoveOpenKey: (value: string) => {},
+  setCurrentTab: () => {},
+  setJsonText: () => {},
+  setAlertBox: () => {},
+  AddOpenKey: () => {},
+  RemoveOpenKey: () => {},
   ResetOpenKey: () => {},
-  setLoadModal: (value: boolean) => {},
-  setCurrentSelectedTab: (id: string) => {},
-  setJsonObject: (jsonObject: any) => {},
-  removeTab: (id: string) => {},
-  setTabModal: (value: boolean) => {},
-  setAddTab: (value: string) => {},
+  setLoadModal: () => {},
+  setCurrentSelectedTab: () => {},
+  setJsonObject: () => {},
+  removeTab: () => {},
+  setTabModal: () => {},
+  setAddTab: () => {},
 };
 
 const AppContext = createContext(defaultValue);
 
-const AppReducer = (state: AppState, action: any) => {
+const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
   switch (action.type) {
     case ReducerTypes?.setCurrentTab:
       return {
@@ -234,33 +240,26 @@ const AppReducer = (state: AppState, action: any) => {
         ...state,
         tabs: [...state.tabs, generateNewTab(action?.payload)],
       };
+    default:
+      return state;
   }
-};
-const updateToLocalStorage = (state: AppState) => {
-  console.log(">>>", JSON.stringify(state.tabs));
-
-  return state;
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }): JSX.Element => {
-  const [state, dispatch] = useReducer(
-    AppReducer,
-    initialState,
-    updateToLocalStorage
-  );
+  const [state, dispatch] = useReducer(AppReducer, initialState);
 
   useMemo(
     () => localStorage.setItem("tabs-data", JSON.stringify(state.tabs)),
     [state]
   );
 
-  function Action<Payload>(type: string, payload?: Payload) {
+  function Action<Payload>(type: ReducerTypes, payload?: Payload) {
     if (payload) {
-      dispatch(CreateAction<Payload>(type, payload));
+      dispatch(CreateAction(type, payload));
     } else {
-      dispatch(CreateAction<Payload>(type));
+      dispatch(CreateAction(type));
     }
   }
 

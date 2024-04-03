@@ -1,5 +1,5 @@
 import * as React from "react"
-
+// @ts-ignore
 import { cn } from "@/lib/utils"
 
 export interface TextareaProps

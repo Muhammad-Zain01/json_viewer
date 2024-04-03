@@ -22,10 +22,12 @@ const LoadJson = () => {
 
   const handleLoadFile = async () => {
     if (currentState == "from-file") {
-      const file = fileRef.current?.files[0];
+      // @ts-ignore
+      const file = fileRef.current?.files && fileRef.current?.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
+          // @ts-ignore
           const fileContent: any = event.target.result;
           if (fileContent) {
             setJsonText(fileContent);
@@ -47,6 +49,7 @@ const LoadJson = () => {
         });
       }
     } else {
+      // @ts-ignore
       const url = inputRef.current.value;
 
       if (url && url != "") {
@@ -60,6 +63,7 @@ const LoadJson = () => {
           toast({
             variant: "destructive",
             title: "URL is not valid or not having json data",
+            // @ts-ignore
             description: err.message,
           });
         }
@@ -96,6 +100,7 @@ const LoadJson = () => {
             </TabsList>
             <TabsContent value="from-file" className="tw-mt-4">
               <Input
+                // @ts-ignore
                 ref={fileRef}
                 type="file"
                 placeholder="Choose JSON File.."
@@ -103,7 +108,11 @@ const LoadJson = () => {
               />
             </TabsContent>
             <TabsContent value="from-url" className="tw-mt-4">
-              <Input ref={inputRef} placeholder="Enter URL..." />
+              <Input
+                // @ts-ignore
+                ref={inputRef}
+                placeholder="Enter URL..."
+              />
             </TabsContent>
           </Tabs>
         </main>

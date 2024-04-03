@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { useApp } from "../context/app-context";
 import { JsonParse, isJsonValid } from "../lib/utils";
 import useData from "../hooks/useData";

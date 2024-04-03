@@ -5,20 +5,41 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// @ts-ignore
+const ParsingAlgo = (...args) => {
+  for (let i = 0; i < args.length; i++) {
+    try {
+      JSON.parse(args[i]);
+      console.log(` >>> ${i}`);
+      return args[i];
+    } catch (e) {
+      continue;
+    }
+  }
+  return args[0];
+};
+
 export const JsonParse = (jsonString: string) => {
   try {
-    let JSON_STRING = jsonString;
-    JSON_STRING = JSON_STRING.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "");
-    JSON_STRING = JSON_STRING.replace(/,\s*([\]}])/g, "$1");
-    JSON_STRING = JSON_STRING.replace(/\n/g, "").trim();
-    JSON_STRING = JSON_STRING.replace(/(\w+)(\s*:\s*)/g, '"$1"$2');
+    const pre_compiled = jsonString.replace(/\n/g, "").trim();
+    const JSON_DATA = ParsingAlgo(
+      pre_compiled,
+      // Remove trailing commas before closing brackets or braces
+      pre_compiled.replace(/,\s*([\]}])/g, "$1"),
+      // Ensure object keys are quoted. This regex targets word characters before a colon.
+      pre_compiled.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":'),
+      // First, remove single line and multi-line comments
+      pre_compiled.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ""),
+      pre_compiled.replace(/({|,)\s*([a-zA-Z0-9_]+?)\s*:/g, '$1 "$2":')
+    );
 
     return {
       success: true,
-      result: JSON.parse(JSON_STRING),
+      result: JSON.parse(JSON_DATA),
       error: null,
     };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       result: null,

@@ -20,9 +20,9 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   row,
 }): JSX.Element => {
   const { AddOpenKey, RemoveOpenKey } = useApp();
-  const { openKeys } = useData();
+  const data = useData();
   const UniqueId = `${row}-${level}`;
-  const isOpen = openKeys.includes(UniqueId);
+  const isOpen = data && data?.openKeys.includes(UniqueId);
 
   let ValueType: string = typeof value;
   if (ValueType == "object") {

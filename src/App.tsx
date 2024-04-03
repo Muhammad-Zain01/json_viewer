@@ -13,7 +13,6 @@ function App() {
   const { setTabModal } = useApp();
   const data = useData();
 
-  const { currentTab } = data;
   return (
     <div className="tw-container">
       <div className="tw-flex tw-mb-4 tw-border-b tw-justify-between tw-items-center">
@@ -25,11 +24,11 @@ function App() {
         </div>
       </div>
       <MultipleTabs />
-      {currentTab ? (
+      {data && data?.currentTab ? (
         <div className="tw-container tw-p-2 tw-border tw-rounded">
           <TabView />
-          {currentTab == "viewer" && <JsonViewer />}
-          {currentTab == "text" && <JsonTextBox />}
+          {data?.currentTab == "viewer" && <JsonViewer />}
+          {data?.currentTab == "text" && <JsonTextBox />}
           <AlertBox />
           <LoadJson />
         </div>

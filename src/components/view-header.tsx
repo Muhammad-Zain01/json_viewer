@@ -7,6 +7,7 @@ import { useToast } from "./ui/use-toast";
 const HeaderView = () => {
   const Seprator = <span className="tw-border-r tw-mx-1 tw-h-[25px]"></span>;
   const { setJsonText, setLoadModal } = useApp();
+  // @ts-ignore
   const { jsonData } = useData();
   const { toast } = useToast();
 

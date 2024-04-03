@@ -18,6 +18,7 @@ const TabModal = () => {
   const { toast } = useToast();
 
   const handleCreateTab = () => {
+    // @ts-ignore
     const value = inputRef.current.value;
     if (value != "") {
       setAddTab(value);
@@ -36,7 +37,11 @@ const TabModal = () => {
         <DialogHeader>
           <DialogTitle>Create new tab</DialogTitle>
         </DialogHeader>
-        <Input ref={inputRef} placeholder="New Tab..." />
+        <Input
+          // @ts-ignore
+          ref={inputRef}
+          placeholder="New Tab..."
+        />
 
         <DialogFooter className="sm:tw-justify-start">
           <Button type="button" onClick={handleCreateTab}>
