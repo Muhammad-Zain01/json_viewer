@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-<img src="https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/preview.png" style="background:white;width: 320px;" />
+<img src="https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/preview1.png" style="background:white;width: 320px;" />
 <h3 align="center">JSON Viewer</h3>
 <div>
     <a href="https://github.com/muhammad-zain01/json_viewer/graphs/contributors"><img src="https://img.shields.io/github/contributors/muhammad-zain01/json_viewer.svg?style=for-the-badge" /></a>
