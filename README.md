@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-<img src="https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/public/preview.png" style="width: 320px;" />
+<img src="https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/preview.png" style="width: 320px;" />
 <h3 align="center">JSON Viewer</h3>
 <div>
     <a href="https://github.com/muhammad-zain01/json_viewer/graphs/contributors"><img src="https://img.shields.io/github/contributors/muhammad-zain01/json_viewer.svg?style=for-the-badge" /></a>
@@ -16,7 +16,6 @@ One of the key features of the JSON Viewer is its functionality, which includes 
 
 Additionally, the JSON Viewer offers support for multiple tabs, allowing users to work with multiple JSON documents simultaneously. This feature enhances productivity by enabling users to switch between different datasets without losing their progress.
 
-
   </p>
     <a href="https://json-viewer.muhammad-zain.com/"><strong>View Demo »</strong></a>
     <br />
@@ -24,9 +23,7 @@ Additionally, the JSON Viewer offers support for multiple tabs, allowing users t
     <br />
 </div>
 
-
 [![Preview][product-screenshot]](https://typing-application.vercel.app/)
-
 
 ### Built With
 
@@ -36,7 +33,6 @@ Additionally, the JSON Viewer offers support for multiple tabs, allowing users t
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
-
 
 ### Installation
 
@@ -53,10 +49,8 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    npm run dev
    ```
-  
 
 Open [http://localhost:3000](http://localhost:5173) with your browser to see the result.
-
 
 [contributors-shield]: https://img.shields.io/github/contributors/muhammad-zain01/json_viewer.svg?style=for-the-badge
 [contributors-url]: https://github.com/muhammad-zain01/json_viewer/graphs/contributors
@@ -73,7 +67,6 @@ Open [http://localhost:3000](http://localhost:5173) with your browser to see the
 [product-screenshot]: https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/preview.png
 [product-screenshot2]: https://raw.githubusercontent.com/Muhammad-Zain01/json_viewer/main/preview2.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-
 [Express.js]: https://img.shields.io/badge/express.js-f1dd1c?style=for-the-badge
 [Node.js]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
 [Next-url]: https://nextjs.org/
@@ -90,5 +83,4 @@ Open [http://localhost:3000](http://localhost:5173) with your browser to see the
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
-
+[JQuery-url]: https://jquery.com
