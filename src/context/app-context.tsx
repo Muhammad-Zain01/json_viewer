@@ -45,14 +45,17 @@ export type AlertBox = {
 export type LoadModal = {
   show: boolean;
 };
-
+type OpenKey = {
+  id: string;
+  label: string | number;
+};
 export type Tabs = {
   id: string;
   jsonObject: any;
   name: string;
   currentTab: CurrentTab;
   jsonData: string;
-  openKeys: string[];
+  openKeys: OpenKey[];
 };
 export type TabModal = {
   show: boolean;
@@ -74,7 +77,7 @@ export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
   setJsonText: (text: string) => void;
   setAlertBox: (box: AlertBox) => void;
-  AddOpenKey: (value: string) => void;
+  AddOpenKey: (value: OpenKey) => void;
   RemoveOpenKey: (value: string) => void;
   ResetOpenKey: () => void;
   setLoadModal: (value: boolean) => void;
@@ -146,7 +149,7 @@ const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
         ...state,
         tabs: state.tabs.map((tab) =>
           tab.id == state?.currentSelectedTab
-            ? { ...tab, jsonData: action?.payload ?? "" }
+            ? { ...tab, jsonData: action?.payload ?? "", openKeys: [] }
             : tab
         ),
       };
@@ -184,7 +187,7 @@ const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
             ? {
                 ...tab,
                 openKeys: tab.openKeys.filter(
-                  (item) => item != action?.payload
+                  (item) => item.id != action?.payload
                 ),
               }
             : tab
@@ -274,8 +277,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const setAlertBox = (alertBox: AlertBox) =>
     Action<AlertBox>(ReducerTypes?.setAlertBox, alertBox);
 
-  const AddOpenKey = (UniqueId: string) =>
-    Action<string>(ReducerTypes?.AddOpenKeys, UniqueId);
+  const AddOpenKey = (data: OpenKey) =>
+    Action<OpenKey>(ReducerTypes?.AddOpenKeys, data);
 
   const RemoveOpenKey = (UniqueId: string) =>
     Action<string>(ReducerTypes?.RemoveOpenKeys, UniqueId);

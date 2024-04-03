@@ -10,7 +10,6 @@ const ParsingAlgo = (...args) => {
   for (let i = 0; i < args.length; i++) {
     try {
       JSON.parse(args[i]);
-      console.log(` >>> ${i}`);
       return args[i];
     } catch (e) {
       continue;
@@ -24,11 +23,8 @@ export const JsonParse = (jsonString: string) => {
     const pre_compiled = jsonString.replace(/\n/g, "").trim();
     const JSON_DATA = ParsingAlgo(
       pre_compiled,
-      // Remove trailing commas before closing brackets or braces
       pre_compiled.replace(/,\s*([\]}])/g, "$1"),
-      // Ensure object keys are quoted. This regex targets word characters before a colon.
       pre_compiled.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":'),
-      // First, remove single line and multi-line comments
       pre_compiled.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ""),
       pre_compiled.replace(/({|,)\s*([a-zA-Z0-9_]+?)\s*:/g, '$1 "$2":')
     );
@@ -51,7 +47,7 @@ export const JsonParse = (jsonString: string) => {
 export const FormatJsonString = (jsonString: string) => {
   const jsonObj = JsonParse(jsonString);
   if (jsonObj.success) {
-    const formattedJSON = JSON.stringify(jsonObj?.result, null, 2);
+    const formattedJSON = JSON.stringify(jsonObj?.result, null, 4);
     return { success: true, json: formattedJSON };
   } else {
     return { success: false, json: "" };

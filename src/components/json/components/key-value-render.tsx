@@ -22,7 +22,8 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   const { AddOpenKey, RemoveOpenKey } = useApp();
   const data = useData();
   const UniqueId = `${row}-${level}`;
-  const isOpen = data && data?.openKeys.includes(UniqueId);
+  const isOpen =
+    data && data?.openKeys.map((item) => item.id).includes(UniqueId);
 
   let ValueType: string = typeof value;
   if (ValueType == "object") {
@@ -35,7 +36,7 @@ const KeyValueRender: React.FC<ComponentProps> = ({
     if (isOpen) {
       RemoveOpenKey(UniqueId);
     } else {
-      AddOpenKey(UniqueId);
+      AddOpenKey({ id: UniqueId, label });
     }
   };
   return (
