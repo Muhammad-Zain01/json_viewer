@@ -9,12 +9,14 @@ import useData from "./hooks/useData";
 import { Button } from "./components/ui/button";
 import { Plus } from "lucide-react";
 import { useApp } from "./context/app-context";
+
 function App() {
   const { setTabModal } = useApp();
   const data = useData();
 
   return (
     <div className="tw-container">
+      
       <div className="tw-flex tw-mb-4 tw-border-b tw-justify-between tw-items-center">
         <h1 className="tw-text-xl tw-font-bold tw-py-5 tw-px-3">
           JSON Viewer / Editor
