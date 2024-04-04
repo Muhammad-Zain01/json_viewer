@@ -4,11 +4,9 @@ import JsonParser from "./json";
 import { Input } from "./ui/input";
 import useData from "../hooks/useData";
 import JsonBreadCrumb from "./json-breadcrumb";
-import Flow from "./flow";
 
 const JsonViewer = () => {
   const { ResetOpenKey } = useApp();
-  const currentTabAdd = "flow";
   const data = useData();
   if (data) {
     const { openKeys, jsonObject } = data;
@@ -37,20 +35,12 @@ const JsonViewer = () => {
           </div>
 
           <div className="tw-border tw-rounded tw-p-2 tw-overflow-scroll">
-            {currentTabAdd == "flow" ? (
-              <div>
-                <Flow />
-              </div>
-            ) : (
-              <>
-                <JsonBreadCrumb />
-                <JsonParser
-                  data={jsonObject}
-                  isArray={Array.isArray(jsonObject)}
-                  level={0}
-                />
-              </>
-            )}
+            <JsonBreadCrumb />
+            <JsonParser
+              data={jsonObject}
+              isArray={Array.isArray(jsonObject)}
+              level={0}
+            />
           </div>
         </div>
       );
