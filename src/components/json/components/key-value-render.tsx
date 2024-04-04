@@ -3,13 +3,14 @@ import useData from "../../../hooks/useData";
 import JsonValue from "./json-label";
 import JsonLabel from "./json-label-object";
 import JsonObjectValue from "./json-value";
+import RowContextMenu from "../../row-context-menu";
 
 type ComponentProps = {
   indent: number;
   label: string | number;
   value: any;
   level: number;
-  row: number;
+  row: string;
 };
 
 const KeyValueRender: React.FC<ComponentProps> = ({
@@ -19,9 +20,10 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   level,
   row,
 }): JSX.Element => {
-  const { AddOpenKey, RemoveOpenKey } = useApp();
+  const { AddOpenKey, RemoveOpenKey, selectedRow } = useApp();
+
   const data = useData();
-  const UniqueId = `${row}-${level}`;
+  const UniqueId = row;
   const isOpen =
     data && data?.openKeys.map((item) => item.id).includes(UniqueId);
 
@@ -39,30 +41,35 @@ const KeyValueRender: React.FC<ComponentProps> = ({
       AddOpenKey({ id: UniqueId, label });
     }
   };
+  const isHightlight = selectedRow == UniqueId ? true : false;
+
   return (
-    <div
-      className={`tw-flex tw-items-start tw-w-full tw-mt-[1px] tw-pl-[${
-        indent * 10
-      }px] tw-text-[15px]`}
-    >
-      <JsonLabel
-        ValueType={ValueType}
-        hanleToggle={hanleToggle}
-        isOpen={isOpen}
-        label={label}
-      />
-      <span className="tw-mr-2">:</span>
-      {!["object", "array"].includes(ValueType) ? (
-        <JsonValue value={value} />
-      ) : (
-        <JsonObjectValue
+    <RowContextMenu id={UniqueId}>
+      <div
+        className={`tw-flex tw-font-mono tw-cursor-pointer  tw-items-start tw-w-full tw-mt-[1px] tw-pl-[${
+          indent * 10
+        }px] tw-text-[15px] ${isHightlight ? "tw-bg-gray-100 tw-rounded" : ""}`}
+      >
+        <JsonLabel
+          ValueType={ValueType}
+          hanleToggle={hanleToggle}
           isOpen={isOpen}
-          value={value}
-          level={level}
-          isArray={ValueType == "array" ? true : false}
+          label={label}
         />
-      )}
-    </div>
+        <span className="tw-mr-2">:</span>
+        {!["object", "array"].includes(ValueType) ? (
+          <JsonValue value={value} />
+        ) : (
+          <JsonObjectValue
+            isOpen={isOpen}
+            value={value}
+            level={level}
+            row={row}
+            isArray={ValueType == "array" ? true : false}
+          />
+        )}
+      </div>
+    </RowContextMenu>
   );
 };
 

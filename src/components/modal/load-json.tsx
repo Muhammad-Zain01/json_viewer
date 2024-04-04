@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 import { useRef, useState } from "react";
 import { useApp } from "../../context/app-context";
 import { useToast } from "../ui/use-toast";
+import { EnterPress } from "../../lib/utils";
 
 const LoadJson = () => {
   const [currentState, setCurreentState] = useState<string>("from-file");
@@ -111,6 +112,7 @@ const LoadJson = () => {
               <Input
                 // @ts-ignore
                 ref={inputRef}
+                onKeyDown={(e) => EnterPress(e, handleLoadFile)}
                 placeholder="Enter URL..."
               />
             </TabsContent>

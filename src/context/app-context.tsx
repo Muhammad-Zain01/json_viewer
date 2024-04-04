@@ -14,6 +14,7 @@ enum ReducerTypes {
   addTab = "ADD_TAB",
   removeTab = "REMOVE_TAB",
   setTabModal = "SET_TAB_MODAL",
+  selectRows = "SELECT_ROWS",
 }
 
 const getData = (): Tabs[] => {
@@ -72,6 +73,7 @@ export type ReducerState = {
   loadModal: LoadModal;
   currentSelectedTab: string;
   tabModal: TabModal;
+  selectedRow: string;
 };
 export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
@@ -86,6 +88,7 @@ export type AppState = ReducerState & {
   removeTab: (id: string) => void;
   setTabModal: (value: boolean) => void;
   setAddTab: (value: string) => void;
+  setSelectedRow: (value: string) => void;
 };
 
 const initialState: ReducerState = {
@@ -101,6 +104,7 @@ const initialState: ReducerState = {
   tabModal: {
     show: false,
   },
+  selectedRow: "",
   currentSelectedTab: "uuid-sample-here",
 };
 
@@ -128,6 +132,7 @@ const defaultValue: AppState = {
   removeTab: () => {},
   setTabModal: () => {},
   setAddTab: () => {},
+  setSelectedRow: () => {},
 };
 
 const AppContext = createContext(defaultValue);
@@ -243,6 +248,12 @@ const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
         ...state,
         tabs: [...state.tabs, generateNewTab(action?.payload)],
       };
+
+    case ReducerTypes?.selectRows:
+      return {
+        ...state,
+        selectedRow: action.payload,
+      };
     default:
       return state;
   }
@@ -298,6 +309,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     Action<string>(ReducerTypes?.addTab, value);
 
   const removeTab = (id: string) => Action<string>(ReducerTypes?.removeTab, id);
+
+  const setSelectedRow = (value: string) =>
+    Action<string>(ReducerTypes?.selectRows, value);
+
   const value = {
     ...state,
     setCurrentTab,
@@ -312,6 +327,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentSelectedTab,
     setJsonObject,
     setAddTab,
+    setSelectedRow,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

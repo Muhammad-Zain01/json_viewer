@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { useRef } from "react";
 import { useToast } from "../ui/use-toast";
 import { useApp } from "../../context/app-context";
+import { EnterPress } from "../../lib/utils";
 
 const TabModal = () => {
   const { tabModal, setTabModal, setAddTab } = useApp();
@@ -40,6 +41,7 @@ const TabModal = () => {
         <Input
           // @ts-ignore
           ref={inputRef}
+          onKeyDown={(e) => EnterPress(e, handleCreateTab)}
           placeholder="New Tab..."
         />
 

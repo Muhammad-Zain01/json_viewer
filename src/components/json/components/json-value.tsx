@@ -5,6 +5,7 @@ type ComponentProps = {
   value: any;
   level: number;
   isArray: boolean;
+  row: string;
 };
 
 const JsonObjectValue: React.FC<ComponentProps> = ({
@@ -12,6 +13,7 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
   value,
   level,
   isArray,
+  row
 }) => {
   return (
     <div className=" tw-cursor-pointer">
@@ -20,6 +22,7 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
           data={value}
           isArray={Array.isArray(value)}
           level={level + 1}
+          parentId={row}
         />
       ) : (
         <span>{isArray ? "[...]" : "{...}"} </span>

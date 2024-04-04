@@ -16,7 +16,7 @@ const JsonLabel: React.FC<ComponentProps> = ({
     <div className="tw-flex ">
       {["object", "array"].includes(ValueType) ? (
         <span
-          className="tw-text-sm  tw-flex tw-items-center tw-mr-1 tw-rounded"
+          className="tw-text-sm tw-flex tw-items-center tw-mr-1 tw-rounded"
           onClick={hanleToggle}
         >
           {isOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
@@ -24,7 +24,7 @@ const JsonLabel: React.FC<ComponentProps> = ({
       ) : (
         <span className="tw-mr-5" />
       )}
-      <span className="hover:tw-bg-gray-100 tw-p-[3px] tw-px-[6px] tw-rounded tw-cursor-pointer">
+      <span className=" tw-p-[3px] tw-px-[6px] tw-rounded tw-cursor-pointer">
         {label}
       </span>
     </div>

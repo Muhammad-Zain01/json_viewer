@@ -1,6 +1,6 @@
 import KeyValueRender from "./components/key-value-render";
 
-const JsonParser: React.FC<any> = ({ data, isArray, level }) => {
+const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
   return (
     <div>
       <span>{isArray ? "[" : "{"}</span>
@@ -13,7 +13,7 @@ const JsonParser: React.FC<any> = ({ data, isArray, level }) => {
                   key={idx}
                   label={idx}
                   value={item}
-                  row={idx}
+                  row={level > 0 ? `${parentId}.${idx}` : `${idx}`}
                   level={level}
                 />
               );
@@ -26,7 +26,7 @@ const JsonParser: React.FC<any> = ({ data, isArray, level }) => {
                   indent={1}
                   key={idx}
                   label={key}
-                  row={idx}
+                  row={level > 0 ? `${parentId}.${idx}` : `${idx}`}
                   value={KeyValue}
                   level={level}
                 />

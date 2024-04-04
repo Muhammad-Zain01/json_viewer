@@ -66,3 +66,9 @@ export const generateUUID = () => {
     return v.toString(16);
   });
 };
+
+export const EnterPress = (e, cb) => {
+  if (e.which == 13) {
+    cb();
+  }
+};
