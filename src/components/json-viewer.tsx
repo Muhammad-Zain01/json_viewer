@@ -3,7 +3,6 @@ import { useApp } from "../context/app-context";
 import JsonParser from "./json";
 import { Input } from "./ui/input";
 import useData from "../hooks/useData";
-import JsonBreadCrumb from "./json-breadcrumb";
 
 const JsonViewer = () => {
   const { ResetOpenKey } = useApp();
@@ -35,7 +34,6 @@ const JsonViewer = () => {
           </div>
 
           <div className="tw-border tw-rounded tw-p-2 tw-overflow-scroll">
-            <JsonBreadCrumb />
             <JsonParser
               data={jsonObject}
               isArray={Array.isArray(jsonObject)}

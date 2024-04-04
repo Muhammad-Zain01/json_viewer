@@ -4,13 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import { AppProvider } from "./context/app-context.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
-import 'reactflow/dist/style.css';
+import ErrorBoundary from "./components/errorboundry.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Toaster />
-    <AppProvider>
-      <App />
-    </AppProvider>
+    <ErrorBoundary>
+      <Toaster />
+      <AppProvider>
+        <App />
+      </AppProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

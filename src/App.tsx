@@ -3,12 +3,12 @@ import JsonViewer from "./components/json-viewer";
 import TabView from "./components/tab-view";
 import AlertBox from "./components/alert-box";
 import LoadJson from "./components/modal/load-json";
-import GithubButton from "./components/json/components/github-buttom";
 import MultipleTabs from "./components/multiple-tabs";
 import useData from "./hooks/useData";
 import { Button } from "./components/ui/button";
 import { Plus } from "lucide-react";
 import { useApp } from "./context/app-context";
+import Header from "./components/header";
 
 function App() {
   const { setTabModal } = useApp();
@@ -16,15 +16,7 @@ function App() {
 
   return (
     <div className="tw-container">
-      
-      <div className="tw-flex tw-mb-4 tw-border-b tw-justify-between tw-items-center">
-        <h1 className="tw-text-xl tw-font-bold tw-py-5 tw-px-3">
-          JSON Viewer / Editor
-        </h1>
-        <div>
-          <GithubButton />
-        </div>
-      </div>
+      <Header />
       <MultipleTabs />
       {data && data?.currentTab ? (
         <div className="tw-container tw-p-2 tw-border tw-rounded">
