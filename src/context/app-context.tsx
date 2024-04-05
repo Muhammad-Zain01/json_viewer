@@ -15,6 +15,7 @@ enum ReducerTypes {
   removeTab = "REMOVE_TAB",
   setTabModal = "SET_TAB_MODAL",
   selectRows = "SELECT_ROWS",
+  setActionModal = "SET_ACTION_MODAL",
 }
 
 const getData = (): Tabs[] => {
@@ -67,6 +68,11 @@ type AppAction = {
   payload?: any;
 };
 
+type ActionModal = {
+  show: boolean;
+  type: "edit" | "delete" | "view" | "";
+  id: string;
+};
 export type ReducerState = {
   tabs: Tabs[];
   alertBox: AlertBox;
@@ -74,6 +80,7 @@ export type ReducerState = {
   currentSelectedTab: string;
   tabModal: TabModal;
   selectedRow: string;
+  actionModal: ActionModal;
 };
 export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
@@ -89,6 +96,7 @@ export type AppState = ReducerState & {
   setTabModal: (value: boolean) => void;
   setAddTab: (value: string) => void;
   setSelectedRow: (value: string) => void;
+  setActionModal: (value: ActionModal) => void;
 };
 
 const initialState: ReducerState = {
@@ -102,6 +110,11 @@ const initialState: ReducerState = {
     show: false,
   },
   tabModal: {
+    show: false,
+  },
+  actionModal: {
+    type: "",
+    id: "",
     show: false,
   },
   selectedRow: "",
@@ -133,6 +146,7 @@ const defaultValue: AppState = {
   setTabModal: () => {},
   setAddTab: () => {},
   setSelectedRow: () => {},
+  setActionModal: () => {},
 };
 
 const AppContext = createContext(defaultValue);
@@ -254,6 +268,11 @@ const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
         ...state,
         selectedRow: action.payload,
       };
+    case ReducerTypes?.setActionModal:
+      return {
+        ...state,
+        actionModal: action.payload,
+      };
     default:
       return state;
   }
@@ -313,6 +332,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const setSelectedRow = (value: string) =>
     Action<string>(ReducerTypes?.selectRows, value);
 
+  const setActionModal = (actionModal: ActionModal) =>
+    Action<ActionModal>(ReducerTypes?.setActionModal, actionModal);
+
   const value = {
     ...state,
     setCurrentTab,
@@ -328,6 +350,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setJsonObject,
     setAddTab,
     setSelectedRow,
+    setActionModal,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

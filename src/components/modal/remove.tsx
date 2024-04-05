@@ -1,3 +1,6 @@
+import { useApp } from "../../context/app-context";
+import useData from "../../hooks/useData";
+import { RemoveObject } from "../../lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,11 +13,16 @@ import {
 } from "../ui/alert-dialog";
 
 const RemoveModal = () => {
+  const { setActionModal, actionModal, setJsonObject } = useApp();
+  const { jsonObject } = useData();
+  const { type, show, id } = actionModal;
+
   const onRemove = () => {
-    console.log("onRemove");
+    setJsonObject(RemoveObject(jsonObject, id));
+    setActionModal({ ...actionModal, show: false });
   };
   return (
-    <AlertDialog>
+    <AlertDialog open={type == "delete" && show == true ? true : false}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -23,7 +31,17 @@ const RemoveModal = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel
+            onClick={() => {
+              setActionModal({
+                type: "",
+                show: false,
+                id: "",
+              });
+            }}
+          >
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction onClick={onRemove}>Remove</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

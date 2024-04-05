@@ -1,4 +1,4 @@
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, ViewIcon } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -11,21 +11,24 @@ const RowContextMenu: React.FC<{ children: React.ReactNode; id: string }> = ({
   children,
   id,
 }) => {
-  const { setSelectedRow } = useApp();
-  const onDelete = () => {
-    console.log("dlete", id);
-  };
+  const { setSelectedRow, selectedRow, setActionModal } = useApp();
 
   const ContextObj = [
     {
-      label: "Delete",
-      icon: <Trash size={13} className="tw-mx-1 tw-mr-2" />,
-      action: onDelete,
+      label: "View",
+      icon: <ViewIcon size={13} className="tw-mx-1 tw-mr-2" />,
+      action: () => setActionModal({ type: "view", show: true, id }),
     },
     {
       label: "Edit",
       icon: <Edit size={13} className="tw-mx-1 tw-mr-2" />,
-      action: onDelete,
+      action: () => setActionModal({ type: "edit", show: true, id }),
+    },
+    {
+      label: "Delete",
+      icon: <Trash size={13} className="tw-mx-1 tw-mr-2" />,
+      action: () =>
+        setActionModal({ type: "delete", show: true, id: selectedRow }),
     },
   ];
   return (

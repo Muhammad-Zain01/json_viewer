@@ -39,11 +39,11 @@ const JsonViewer = () => {
             <div className="tw-flex tw-border tw-rounded tw-items-center tw-p-2 tw-mb-2">
               <ToolbarIcon
                 icon={<ListTree size={16} />}
-                onClick={() => handleToggleTree}
+                onClick={() => handleToggleTree()}
               />
               <ToolbarIcon
                 icon={<ListTree size={16} />}
-                onClick={() => handleToggleTree}
+                onClick={() => handleToggleTree()}
               />
             </div>
 
