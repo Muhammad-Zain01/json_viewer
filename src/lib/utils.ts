@@ -75,34 +75,43 @@ export const EnterPress = (e, cb) => {
 
 export const RemoveObject = (object: any, ind: string) => {
   const levels = ind.split(".");
-  let newObject = null;
+  let newObject: any = { ...object };
+  let selectedObject: any = newObject;
 
   for (let i = 0; i < levels.length; i++) {
     const vl = Number(levels[i]);
-
     const isLast = levels.length - 1 == i ? true : false;
-    console.log(isLast);
-    if (typeof object == "object") {
-      if (Array.isArray(object)) {
-        newObject = object.filter((_, idx) => {
-          if (idx == vl) {
-            return false;
-          } else {
-            return true;
-          }
-        });
-        return newObject;
-      } else {
-        const valueObject = Object.keys(object).filter((key, idx) => {
-          if (idx == vl) {
-            return true;
-          }
-          return false;
-        });
-        if (valueObject.length) {
-          newObject = { ...object };
-          delete newObject[valueObject[0]];
+
+    if (isLast) {
+      if (typeof selectedObject == "object") {
+        if (Array.isArray(selectedObject)) {
+          selectedObject.splice(vl, 1);
           return newObject;
+        } else {
+          const valueObject = Object.keys(selectedObject).filter((key, idx) => {
+            if (idx == vl) {
+              return true;
+            }
+            return false;
+          });
+          if (valueObject.length) {
+            delete selectedObject[valueObject[0]];
+            return newObject;
+          }
+        }
+      }
+    } else {
+      if (typeof selectedObject == "object") {
+        if (Array.isArray(selectedObject)) {
+          selectedObject = selectedObject[vl];
+        } else {
+          const valueObject = Object.keys(selectedObject).filter((_, idx) => {
+            if (idx == vl) {
+              return true;
+            }
+            return false;
+          });
+          selectedObject = selectedObject[valueObject[0]];
         }
       }
     }
