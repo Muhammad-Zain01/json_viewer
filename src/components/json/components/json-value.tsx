@@ -16,7 +16,7 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
   row
 }) => {
   return (
-    <div className=" tw-cursor-pointer">
+    <div className=" cursor-pointer">
       {isOpen ? (
         <JsonParser
           data={value}

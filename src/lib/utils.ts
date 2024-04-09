@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
 // @ts-ignore
 const ParsingAlgo = (...args) => {
   for (let i = 0; i < args.length; i++) {
@@ -67,6 +66,7 @@ export const generateUUID = () => {
   });
 };
 
+// @ts-ignore
 export const EnterPress = (e, cb) => {
   if (e.which == 13) {
     cb();

@@ -5,14 +5,14 @@ import useData from "../hooks/useData";
 import RemoveModal from "./modal/remove";
 import EditModal from "./modal/edit";
 
-const ToolbarIcon: React.FC<{ icon: React.ReactNode; onClick: () => {} }> = ({
+const ToolbarIcon: React.FC<{ icon: React.ReactNode; onClick: () => void }> = ({
   icon,
   onClick,
 }) => {
   return (
-    <div className="tw-flex tw-justify-between tw-items-center">
+    <div className="flex justify-between items-center">
       <span
-        className="tw-inline-block tw-rounded tw-border tw-p-2 tw-mx-1 hover:tw-bg-gray-50"
+        className="inline-block rounded border p-2 mx-1 hover:bg-gray-50"
         onClick={onClick}
       >
         {icon}
@@ -35,8 +35,8 @@ const JsonViewer = () => {
     if (jsonObject) {
       return (
         <>
-          <div className="tw-mt-5 tw-m-2">
-            <div className="tw-flex tw-border tw-rounded tw-items-center tw-p-2 tw-mb-2">
+          <div className="mt-5 m-2">
+            <div className="flex border rounded items-center p-2 mb-2">
               <ToolbarIcon
                 icon={<ListTree size={16} />}
                 onClick={() => handleToggleTree()}
@@ -47,7 +47,7 @@ const JsonViewer = () => {
               />
             </div>
 
-            <div className="tw-border tw-rounded tw-p-2 tw-overflow-scroll">
+            <div className="border rounded p-2 overflow-scroll">
               <JsonParser
                 data={jsonObject}
                 isArray={Array.isArray(jsonObject)}

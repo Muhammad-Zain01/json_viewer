@@ -34,7 +34,7 @@ const TabModal = () => {
 
   return (
     <Dialog open={tabModal?.show} onOpenChange={(e) => setTabModal(e)}>
-      <DialogContent className="sm:tw-max-w-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create new tab</DialogTitle>
         </DialogHeader>
@@ -45,7 +45,7 @@ const TabModal = () => {
           placeholder="New Tab..."
         />
 
-        <DialogFooter className="sm:tw-justify-start">
+        <DialogFooter className="sm:justify-start">
           <Button type="button" onClick={handleCreateTab}>
             Create
           </Button>

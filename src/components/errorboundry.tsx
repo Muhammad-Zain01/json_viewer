@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Header from "./header";
 import { Button } from "./ui/button";
@@ -32,29 +33,28 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="tw-container">
+        <div className="container">
           <Header />
-          <div className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-mt-[100px] ">
-            <img src="/broken.svg" alt="broken" className="tw-w-[300px]" />
-            <h2 className="tw-text-2xl tw-font-semibold tw-mt-5">
+          <div className="flex flex-col justify-center items-center mt-[100px] ">
+            <img src="/broken.svg" alt="broken" className="w-[300px]" />
+            <h2 className="text-2xl font-semibold mt-5">
               Something got broken!
             </h2>
-            <div className="tw-flex tw-mt-5">
-              <Button
-                className="tw-mx-1"
-                onClick={() => window.location.reload()}
-              >
-                <RefreshCcw size={14} className="tw-mr-2" />
+            <div className="flex mt-5">
+              <Button className="mx-1" onClick={() => window.location.reload()}>
+                <RefreshCcw size={14} className="mr-2" />
                 Refresh
               </Button>
               <Button
-                className="tw-mx-1"
+                className="mx-1"
                 onClick={() => {
-                  localStorage && localStorage.removeItem("tabs-data");
-                  window.location.reload();
+                  if (typeof window !== "undefined") {
+                    localStorage && localStorage.removeItem("tabs-data");
+                    window.location.reload();
+                  }
                 }}
               >
-                <RotateCw size={14} className="tw-mr-2" />
+                <RotateCw size={14} className="mr-2" />
                 Reset
               </Button>
             </div>

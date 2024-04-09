@@ -79,13 +79,13 @@ const LoadJson = () => {
 
   return (
     <Dialog open={loadModal?.show} onOpenChange={(e) => setLoadModal(e)}>
-      <DialogContent className="sm:tw-max-w-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Load JSON Data</DialogTitle>
         </DialogHeader>
         <main>
           <Tabs defaultValue="from-file">
-            <TabsList className="tw-grid tw-w-full tw-grid-cols-2">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger
                 value="from-file"
                 onClick={() => setCurreentState("from-file")}
@@ -99,7 +99,7 @@ const LoadJson = () => {
                 From URL
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="from-file" className="tw-mt-4">
+            <TabsContent value="from-file" className="mt-4">
               <Input
                 // @ts-ignore
                 ref={fileRef}
@@ -108,7 +108,7 @@ const LoadJson = () => {
                 accept="application/json"
               />
             </TabsContent>
-            <TabsContent value="from-url" className="tw-mt-4">
+            <TabsContent value="from-url" className="mt-4">
               <Input
                 // @ts-ignore
                 ref={inputRef}
@@ -119,7 +119,7 @@ const LoadJson = () => {
           </Tabs>
         </main>
 
-        <DialogFooter className="sm:tw-justify-start">
+        <DialogFooter className="sm:justify-start">
           <Button type="button" onClick={handleLoadFile}>
             Load
           </Button>

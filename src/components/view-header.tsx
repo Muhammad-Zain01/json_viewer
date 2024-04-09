@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
 const HeaderView = () => {
-  const Seprator = <span className="tw-border-r tw-mx-1 tw-h-[25px]"></span>;
+  const Seprator = <span className="border-r mx-1 h-[25px]"></span>;
   const { setJsonText, setLoadModal } = useApp();
   // @ts-ignore
   const { jsonData } = useData();
@@ -64,11 +64,11 @@ const HeaderView = () => {
     setLoadModal(true);
   };
   return (
-    <div className="tw-mb-2  tw-border tw-p-1 tw-mr-1 tw-flex tw-items-center tw-flex-wrap">
+    <div className="mb-2  border p-1 mr-1 flex items-center flex-wrap">
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px]  tw-p-0"
+        className="text-[12px] p-2"
         onClick={handleCopy}
       >
         Copy
@@ -77,7 +77,7 @@ const HeaderView = () => {
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px]   tw-p-0"
+        className="text-[12px] p-2"
         onClick={handlePaste}
       >
         Paste
@@ -86,7 +86,7 @@ const HeaderView = () => {
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px] tw-p-0"
+        className="text-[12px] p-2"
         onClick={handleClear}
       >
         Clear
@@ -95,7 +95,7 @@ const HeaderView = () => {
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px] tw-p-0"
+        className="text-[12px] p-2"
         onClick={handleRemoveWhiteSpace}
       >
         Remove White Spaces
@@ -104,7 +104,7 @@ const HeaderView = () => {
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px] tw-p-0"
+        className="text-[12px] p-2"
         onClick={handleFormatJson}
       >
         Format JSON
@@ -113,7 +113,7 @@ const HeaderView = () => {
       <Button
         size={"sm"}
         variant="ghost"
-        className="tw-text-[12px] tw-p-0"
+        className="text-[12px] p-2"
         onClick={handleLoadJsonData}
       >
         Load JSON Data

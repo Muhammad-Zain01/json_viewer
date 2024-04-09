@@ -13,18 +13,18 @@ const JsonLabel: React.FC<ComponentProps> = ({
   label,
 }): JSX.Element => {
   return (
-    <div className="tw-flex ">
+    <div className="flex ">
       {["object", "array"].includes(ValueType) ? (
         <span
-          className="tw-text-sm tw-flex tw-items-center tw-mr-1 tw-rounded"
+          className="text-sm flex items-center mr-1 rounded"
           onClick={hanleToggle}
         >
           {isOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
         </span>
       ) : (
-        <span className="tw-mr-5" />
+        <span className="mr-5" />
       )}
-      <span className=" tw-p-[3px] tw-px-[6px] tw-rounded tw-cursor-pointer">
+      <span className=" p-[3px] px-[6px] rounded cursor-pointer">
         {label}
       </span>
     </div>

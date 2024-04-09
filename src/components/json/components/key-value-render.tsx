@@ -49,9 +49,9 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   return (
     <RowContextMenu id={UniqueId}>
       <div
-        className={`tw-flex tw-font-mono tw-cursor-pointer  tw-items-start tw-w-full tw-mt-[1px] tw-pl-[${
+        className={`flex font-mono cursor-pointer  items-start w-full mt-[1px] pl-[${
           indent * 10
-        }px] tw-text-[15px] ${isHightlight ? "tw-bg-gray-100 tw-rounded" : ""}`}
+        }px] text-[15px] ${isHightlight ? "bg-gray-100 rounded" : ""}`}
       >
         <JsonLabel
           ValueType={ValueType}
@@ -59,7 +59,7 @@ const KeyValueRender: React.FC<ComponentProps> = ({
           isOpen={isOpen}
           label={label}
         />
-        <span className="tw-mr-2">:</span>
+        <span className="mr-2">:</span>
         {!["object", "array"].includes(ValueType) ? (
           <JsonValue value={value} />
         ) : (

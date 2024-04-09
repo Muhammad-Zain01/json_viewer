@@ -1,3 +1,5 @@
+'use client'
+
 import { Plus, X } from "lucide-react";
 import { useApp } from "../context/app-context";
 import TabModal from "./modal/tab-modal";
@@ -10,16 +12,16 @@ const Tab: React.FC<{
 }> = ({ isSelected = false, name, onClick, onRemove }) => {
   return (
     <div
-      className={`tw-flex tw-mr-1 tw-justify-between tw-items-center tw-w-fit tw-py-1 tw-pl-3 tw-border tw-rounded tw-cursor-pointer ${
-        isSelected ? "tw-border-gray-400" : ""
+      className={`flex mr-1 justify-between items-center w-fit py-1 pl-3 border rounded cursor-pointer ${
+        isSelected ? "border-gray-400" : ""
       }`}
       onClick={onClick}
     >
-      <span className="tw-w-[140px] tw-overflow-hidden tw-whitespace-nowrap tw-text-ellipsis">
+      <span className="w-[140px] overflow-hidden whitespace-nowrap text-ellipsis">
         {name}
       </span>
       <span
-        className="tw-ml-2 tw-mr-2  hover:tw-bg-gray-100 tw-p-[5px] tw-rounded"
+        className="ml-2 mr-2  hover:bg-gray-100 p-[5px] rounded"
         onClick={onRemove}
       >
         <X size={11} />
@@ -41,7 +43,7 @@ const MultipleTabs = () => {
     <>
       {tabs.length > 0 && (
         <div
-          className="tw-flex tw-items-center tw-py-3 tw-text-sm "
+          className="flex items-center py-3 text-sm "
           style={{ overflowX: "scroll" }}
         >
           {tabs.map((item, idx) => {
@@ -59,9 +61,9 @@ const MultipleTabs = () => {
               />
             );
           })}
-          <div className="tw-ml-2 tw-flex">
+          <div className="ml-2 flex">
             <span
-              className="tw-p-2 tw-rounded tw-border hover:tw-bg-gray-100"
+              className="p-2 rounded border hover:bg-gray-100"
               onClick={() => setTabModal(true)}
             >
               <Plus size={12} />

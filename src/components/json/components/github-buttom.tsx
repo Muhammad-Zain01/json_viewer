@@ -6,8 +6,8 @@ const GithubButton = () => {
     <div>
       <a href="https://github.com/Muhammad-Zain01" target="_blank">
         <Button variant={"outline"} onClick={() => {}}>
-          <Github size={18} className="tw-mr-2" />
-          Follow<strong className="tw-ml-1">Muhammad Zain</strong>
+          <Github size={18} className="mr-2" />
+          Follow<strong className="ml-1">Muhammad Zain</strong>
         </Button>
       </a>
     </div>

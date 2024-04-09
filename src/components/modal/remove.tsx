@@ -14,6 +14,7 @@ import {
 
 const RemoveModal = () => {
   const { setActionModal, actionModal, setJsonObject } = useApp();
+  // @ts-ignore
   const { jsonObject } = useData();
   const { type, show, id } = actionModal;
 

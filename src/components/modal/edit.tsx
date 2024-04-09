@@ -18,6 +18,7 @@ const EditModal = () => {
   const { actionModal, setActionModal } = useApp();
   const { type, show, id } = actionModal;
   const [formValue, setFormValue] = useState([]);
+  // @ts-ignore
   const { jsonObject } = useData();
 
   const showModal = type == "edit" && show == true ? true : false;
@@ -32,10 +33,13 @@ const EditModal = () => {
           const FilteredKey = Object.keys(obj.form).find(
             (key, idx) => idx == id
           );
-          const CurrentFormValue = obj?.form[FilteredKey];
-          if (typeof CurrentFormValue != "object") {
-            console.log(CurrentFormValue);
-            setFormValue([{ key: FilteredKey, value: CurrentFormValue }]);
+          if (FilteredKey) {
+            const CurrentFormValue = obj?.form[FilteredKey];
+            if (typeof CurrentFormValue != "object") {
+              console.log(CurrentFormValue);
+              // @ts-ignore
+              setFormValue([{ key: FilteredKey, value: CurrentFormValue }]);
+            }
           }
         }
       }
@@ -50,13 +54,13 @@ const EditModal = () => {
   return (
     <Dialog
       open={showModal}
-      onOpenChange={(e) => setActionModal({ type: "edit", show: e })}
+      onOpenChange={(e) => setActionModal({ type: "edit", id: "", show: e })}
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Record</DialogTitle>
         </DialogHeader>
-        <div className="tw-grid tw-gap-4 tw-py-4">
+        <div className="grid gap-4 py-4">
           {formValue.map((item, idx) => {
             return (
               <div key={idx}>
@@ -64,17 +68,20 @@ const EditModal = () => {
                   <Label htmlFor="name">key</Label>
                   <Input
                     id="key"
+                    // @ts-ignore
                     defaultValue={item?.key ?? idx}
+                    // @ts-ignore
                     disabled={item?.key ? false : true}
-                    className="tw-mt-1"
+                    className="mt-1"
                   />
                 </div>
-                <div className="tw-mt-3">
+                <div className="mt-3">
                   <Label htmlFor="name">value</Label>
                   <Textarea
                     id="value"
+                    // @ts-ignore
                     defaultValue={item?.value}
-                    className="tw-mt-1 tw-h-[140px]"
+                    className="mt-1 h-[140px]"
                   />
                 </div>
               </div>

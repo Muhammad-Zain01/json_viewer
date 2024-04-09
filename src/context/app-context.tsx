@@ -1,3 +1,4 @@
+"use client";
 import { createContext, useContext, useMemo, useReducer } from "react";
 import { generateUUID } from "../lib/utils";
 
@@ -20,12 +21,15 @@ enum ReducerTypes {
 
 const getData = (): Tabs[] => {
   try {
-    let data = localStorage.getItem("tabs-data");
-    if (data) {
-      return JSON.parse(data);
-    } else {
-      return [];
+    if (typeof window !== "undefined") {
+      let data = localStorage.getItem("tabs-data");
+      if (data) {
+        return JSON.parse(data);
+      } else {
+        return [];
+      }
     }
+    return [];
   } catch {
     return [];
   }
@@ -283,10 +287,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 }): JSX.Element => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
-  useMemo(
-    () => localStorage.setItem("tabs-data", JSON.stringify(state.tabs)),
-    [state]
-  );
+  useMemo(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
+    }
+  }, [state]);
 
   function Action<Payload>(type: ReducerTypes, payload?: Payload) {
     if (payload) {

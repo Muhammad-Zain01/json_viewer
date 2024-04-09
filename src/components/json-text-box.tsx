@@ -9,7 +9,7 @@ const JsonTextBox = () => {
   if (data) {
     const { jsonData } = data;
     return (
-      <div className="tw-mt-5 tw-m-2">
+      <div className="mt-5 m-2">
         <HeaderView />
         <Textarea
           placeholder="Paste your JSON ..."
