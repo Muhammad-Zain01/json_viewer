@@ -117,3 +117,34 @@ export const RemoveObject = (object: any, ind: string) => {
     }
   }
 };
+
+export const GetObject = (object: any, ind: string) => {
+  const levels = ind.split(".");
+  let newObject: any = { ...object };
+  let selectedObject: any = newObject;
+
+  for (let i = 0; i < levels.length; i++) {
+    const vl = Number(levels[i]);
+    const isLast = levels.length - 1 == i ? true : false;
+
+    if (isLast) {
+      if (typeof selectedObject == "object") {
+        return { form: selectedObject, id: vl };
+      }
+    } else {
+      if (typeof selectedObject == "object") {
+        if (Array.isArray(selectedObject)) {
+          selectedObject = selectedObject[vl];
+        } else {
+          const valueObject = Object.keys(selectedObject).filter((_, idx) => {
+            if (idx == vl) {
+              return true;
+            }
+            return false;
+          });
+          selectedObject = selectedObject[valueObject[0]];
+        }
+      }
+    }
+  }
+};

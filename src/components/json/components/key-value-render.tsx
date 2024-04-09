@@ -28,6 +28,9 @@ const KeyValueRender: React.FC<ComponentProps> = ({
     data && data?.openKeys.map((item) => item.id).includes(UniqueId);
 
   let ValueType: string = typeof value;
+  if (!value) {
+    ValueType = "null";
+  }
   if (ValueType == "object") {
     if (Array.isArray(value)) {
       ValueType = "array";

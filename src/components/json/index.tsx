@@ -21,6 +21,7 @@ const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
           : typeof data == "object" &&
             Object.keys(data).map((key, idx) => {
               const KeyValue = data[key];
+              
               return (
                 <KeyValueRender
                   indent={1}
