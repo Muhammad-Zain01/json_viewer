@@ -4,6 +4,7 @@ import JsonValue from "./json-label";
 import JsonLabel from "./json-label-object";
 import JsonObjectValue from "./json-value";
 import RowContextMenu from "../../row-context-menu";
+import { getValueType } from "@/lib/utils";
 
 type ComponentProps = {
   indent: number;
@@ -27,15 +28,7 @@ const KeyValueRender: React.FC<ComponentProps> = ({
   const isOpen =
     data && data?.openKeys.map((item) => item.id).includes(UniqueId);
 
-  let ValueType: string = typeof value;
-  if (!value) {
-    ValueType = "null";
-  }
-  if (ValueType == "object") {
-    if (Array.isArray(value)) {
-      ValueType = "array";
-    }
-  }
+  const ValueType = getValueType(value);
 
   const hanleToggle = () => {
     if (isOpen) {
@@ -61,7 +54,7 @@ const KeyValueRender: React.FC<ComponentProps> = ({
         />
         <span className="mr-2">:</span>
         {!["object", "array"].includes(ValueType) ? (
-          <JsonValue value={value} />
+          <JsonValue value={value} id={UniqueId} />
         ) : (
           <JsonObjectValue
             isOpen={isOpen}

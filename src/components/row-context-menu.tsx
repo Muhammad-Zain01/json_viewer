@@ -14,16 +14,16 @@ const RowContextMenu: React.FC<{ children: React.ReactNode; id: string }> = ({
   const { setSelectedRow, selectedRow, setActionModal } = useApp();
 
   const ContextObj = [
-    {
-      label: "View",
-      icon: <ViewIcon size={13} className="mx-1 mr-2" />,
-      action: () => setActionModal({ type: "view", show: true, id }),
-    },
-    {
-      label: "Edit",
-      icon: <Edit size={13} className="mx-1 mr-2" />,
-      action: () => setActionModal({ type: "edit", show: true, id }),
-    },
+    // {
+    //   label: "View",
+    //   icon: <ViewIcon size={13} className="mx-1 mr-2" />,
+    //   action: () => setActionModal({ type: "view", show: true, id }),
+    // },
+    // {
+    //   label: "Edit",
+    //   icon: <Edit size={13} className="mx-1 mr-2" />,
+    //   action: () => setActionModal({ type: "edit", show: true, id }),
+    // },
     {
       label: "Delete",
       icon: <Trash size={13} className="mx-1 mr-2" />,

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import JsonTextBox from "./json-text-box";
 import JsonViewer from "./json-viewer";
@@ -9,7 +9,7 @@ import useData from "@/hooks/useData";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { useApp } from "@/context/app-context";
-
+import FormDesigner from "./form-designer";
 
 function MainApp() {
   const { setTabModal } = useApp();

@@ -3,7 +3,7 @@ import { useApp } from "../context/app-context";
 import JsonParser from "./json";
 import useData from "../hooks/useData";
 import RemoveModal from "./modal/remove";
-import EditModal from "./modal/edit";
+import { getValueType } from "@/lib/utils";
 
 const ToolbarIcon: React.FC<{ icon: React.ReactNode; onClick: () => void }> = ({
   icon,
@@ -25,7 +25,7 @@ const JsonViewer = () => {
   const data = useData();
   if (data) {
     const { openKeys, jsonObject } = data;
-
+    const jsonObjectType = getValueType(jsonObject);
     const handleToggleTree = () => {
       if (openKeys.length) {
         ResetOpenKey();
@@ -50,14 +50,13 @@ const JsonViewer = () => {
             <div className="border rounded p-2 overflow-scroll">
               <JsonParser
                 data={jsonObject}
-                isArray={Array.isArray(jsonObject)}
+                isArray={jsonObjectType == "array" ? true : false}
                 level={0}
                 parentId={0}
               />
             </div>
           </div>
           <RemoveModal />
-          <EditModal />
         </>
       );
     }

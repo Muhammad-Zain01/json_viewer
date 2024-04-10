@@ -1,11 +1,13 @@
+import { getValueType } from "@/lib/utils";
 import KeyValueRender from "./components/key-value-render";
 
 const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
+  const DataType = getValueType(data);
   return (
     <div>
       <span>{isArray ? "[" : "{"}</span>
       <div>
-        {Array.isArray(data)
+        {DataType == "array"
           ? data.map((item, idx) => {
               return (
                 <KeyValueRender
@@ -18,10 +20,10 @@ const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
                 />
               );
             })
-          : typeof data == "object" &&
+          : DataType == "object" &&
             Object.keys(data).map((key, idx) => {
               const KeyValue = data[key];
-              
+
               return (
                 <KeyValueRender
                   indent={1}

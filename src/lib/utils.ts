@@ -118,7 +118,7 @@ export const RemoveObject = (object: any, ind: string) => {
   }
 };
 
-export const GetObject = (object: any, ind: string) => {
+export const SetValue = (object: any, ind: string, value: any) => {
   const levels = ind.split(".");
   let newObject: any = { ...object };
   let selectedObject: any = newObject;
@@ -129,7 +129,21 @@ export const GetObject = (object: any, ind: string) => {
 
     if (isLast) {
       if (typeof selectedObject == "object") {
-        return { form: selectedObject, id: vl };
+        if (Array.isArray(selectedObject)) {
+          selectedObject[vl] = value;
+          return newObject;
+        } else {
+          const valueObject = Object.keys(selectedObject).filter((key, idx) => {
+            if (idx == vl) {
+              return true;
+            }
+            return false;
+          });
+          if (valueObject.length) {
+            selectedObject[valueObject[0]] = value;
+            return newObject;
+          }
+        }
       }
     } else {
       if (typeof selectedObject == "object") {
@@ -147,4 +161,48 @@ export const GetObject = (object: any, ind: string) => {
       }
     }
   }
+};
+
+export const GetObject = (object: any, ind: string) => {
+  const levels = ind.split(".");
+  let newObject: any = { ...object };
+  let selectedObject: any = newObject;
+  let path = "";
+
+  for (let i = 0; i < levels.length; i++) {
+    const vl = Number(levels[i]);
+
+    const isLast = levels.length - 1 == i ? true : false;
+
+    path = `${path}${vl}${!isLast ? "." : ""}`;
+    if (isLast) {
+      if (typeof selectedObject == "object") {
+        return { form: selectedObject, id: vl, path };
+      }
+    } else {
+      if (typeof selectedObject == "object") {
+        if (Array.isArray(selectedObject)) {
+          selectedObject = selectedObject[vl];
+        } else {
+          const valueObject = Object.keys(selectedObject).filter((_, idx) => {
+            if (idx == vl) {
+              return true;
+            }
+            return false;
+          });
+          selectedObject = selectedObject[valueObject[0]];
+        }
+      }
+    }
+  }
+};
+
+export const getValueType = (value: any) => {
+  if (value === null) return "null";
+  if (value === undefined) return "undefined";
+  if (value === false) return "boolean";
+  if (value === true) return "boolean";
+  if (Array.isArray(value)) return "array";
+  if (typeof value == "object") return "object";
+  return typeof value;
 };
