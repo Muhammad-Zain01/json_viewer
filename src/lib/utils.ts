@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { ConstructionIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -163,40 +164,31 @@ export const SetValue = (object: any, ind: string, value: any) => {
   }
 };
 
-export const GetObject = (object: any, ind: string) => {
-  const levels = ind.split(".");
-  let newObject: any = { ...object };
-  let selectedObject: any = newObject;
-  let path = "";
-
-  for (let i = 0; i < levels.length; i++) {
-    const vl = Number(levels[i]);
-
-    const isLast = levels.length - 1 == i ? true : false;
-
-    path = `${path}${vl}${!isLast ? "." : ""}`;
-    if (isLast) {
-      if (typeof selectedObject == "object") {
-        return { form: selectedObject, id: vl, path };
-      }
-    } else {
-      if (typeof selectedObject == "object") {
-        if (Array.isArray(selectedObject)) {
-          selectedObject = selectedObject[vl];
-        } else {
-          const valueObject = Object.keys(selectedObject).filter((_, idx) => {
-            if (idx == vl) {
-              return true;
-            }
-            return false;
-          });
-          selectedObject = selectedObject[valueObject[0]];
-        }
-      }
-    }
+function replaceKey(obj: any, oldKey: string, newKey: string) {
+  if (obj.hasOwnProperty(oldKey)) {
+    obj[newKey] = obj[oldKey]; // Create new key with the value of old key
+    delete obj[oldKey]; // Delete the old key
+    return obj;
   }
-};
+}
 
+function detectStringType(input: string) {
+  const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+  if (colorRegex.test(input)) {
+    return "color";
+  }
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (dateRegex.test(input)) {
+    return "date";
+  }
+
+  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/;
+  if (isoDateRegex.test(input)) {
+    return "datetime";
+  }
+
+  return "string";
+}
 export const getValueType = (value: any) => {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
@@ -204,5 +196,6 @@ export const getValueType = (value: any) => {
   if (value === true) return "boolean";
   if (Array.isArray(value)) return "array";
   if (typeof value == "object") return "object";
+  if (typeof value == "string") return detectStringType(value);
   return typeof value;
 };

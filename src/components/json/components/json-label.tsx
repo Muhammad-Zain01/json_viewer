@@ -40,6 +40,7 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
   };
 
   const render = (fieldValue) => {
+    console.log(fieldValue?.type);
     switch (fieldValue?.type.toLocaleLowerCase()) {
       case "string":
         const lenghtOfValue = fieldValue?.default?.length;
@@ -104,6 +105,54 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        );
+
+      case "color":
+        return (
+          <FormField
+            control={form.control}
+            name={fieldValue.name}
+            defaultValue={fieldValue.default}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input type="color" className="w-[80px]" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        );
+
+      case "date":
+        return (
+          <FormField
+            control={form.control}
+            name={fieldValue.name}
+            defaultValue={fieldValue.default}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input type="date" className="w-[150px]" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        );
+
+      case "datetime":
+        return (
+          <FormField
+            control={form.control}
+            name={fieldValue.name}
+            defaultValue={fieldValue.default}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input type="datetime-local" className="w-[230px]" {...field} />
                 </FormControl>
               </FormItem>
             )}

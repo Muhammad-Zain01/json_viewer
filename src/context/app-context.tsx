@@ -1,6 +1,14 @@
 "use client";
-import { createContext, useContext, useMemo, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
 import { generateUUID } from "../lib/utils";
+import useSettings from "@/hooks/useSettings";
+import { useToast } from "@/components/ui/use-toast";
 
 enum ReducerTypes {
   setCurrentTab = "SET_CURRENT_TAB",
@@ -17,6 +25,7 @@ enum ReducerTypes {
   setTabModal = "SET_TAB_MODAL",
   selectRows = "SELECT_ROWS",
   setActionModal = "SET_ACTION_MODAL",
+  initialTab = "INITIAT_TABS",
 }
 
 const getData = (): Tabs[] => {
@@ -74,7 +83,7 @@ type AppAction = {
 
 type ActionModal = {
   show: boolean;
-  type: "edit" | "delete" | "view" | "";
+  type: "edit" | "delete" | "view" | "copy" | "";
   id: string;
 };
 export type ReducerState = {
@@ -104,7 +113,7 @@ export type AppState = ReducerState & {
 };
 
 const initialState: ReducerState = {
-  tabs: getData(),
+  tabs: [],
   alertBox: {
     show: false,
     title: "",
@@ -157,6 +166,12 @@ const AppContext = createContext(defaultValue);
 
 const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
   switch (action.type) {
+    case ReducerTypes?.initialTab:
+      return {
+        ...state,
+        tabs: action.payload,
+      };
+
     case ReducerTypes?.setCurrentTab:
       return {
         ...state,
@@ -286,10 +301,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }): JSX.Element => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
-
-  useMemo(() => {
+  const { getSettings } = useSettings();
+  const { toast } = useToast();
+  useEffect(() => {
+    const data = getData();
+    if (data?.length) {
+      dispatch(CreateAction(ReducerTypes.initialTab, data));
+    }
+  }, []);
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
+      if (getSettings) {
+        const setting = getSettings();
+        if (setting) {
+          if (setting?.saveToLocalStorage != undefined) {
+            if (setting?.saveToLocalStorage) {
+              try {
+                localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
+              } catch (err) {
+                toast({
+                  variant: "destructive",
+                  title: "Big JSON",
+                  description:
+                    "Your JSON is Very Big in Size, Please change the Setting to not save in Localstorage",
+                });
+              }
+            }
+          } else {
+            localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
+          }
+        }
+      }
     }
   }, [state]);
 

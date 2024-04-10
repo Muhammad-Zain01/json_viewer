@@ -7,8 +7,9 @@ const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
     <div>
       <span>{isArray ? "[" : "{"}</span>
       <div>
-        {DataType == "array"
-          ? data.map((item, idx) => {
+        {DataType == "array" ? (
+          data.length > 0 ? (
+            data.map((item, idx) => {
               return (
                 <KeyValueRender
                   indent={1}
@@ -20,21 +21,26 @@ const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
                 />
               );
             })
-          : DataType == "object" &&
-            Object.keys(data).map((key, idx) => {
-              const KeyValue = data[key];
-
-              return (
-                <KeyValueRender
-                  indent={1}
-                  key={idx}
-                  label={key}
-                  row={level > 0 ? `${parentId}.${idx}` : `${idx}`}
-                  value={KeyValue}
-                  level={level}
-                />
-              );
-            })}
+          ) : (
+            <div className="w-full py-4 text-gray-400 italic">...Empty...</div>
+          )
+        ) : DataType == "object" && Object.keys(data).length > 0 ? (
+          Object.keys(data).map((key, idx) => {
+            const KeyValue = data[key];
+            return (
+              <KeyValueRender
+                indent={1}
+                key={idx}
+                label={key}
+                row={level > 0 ? `${parentId}.${idx}` : `${idx}`}
+                value={KeyValue}
+                level={level}
+              />
+            );
+          })
+        ) : (
+          <div className="w-full py-4 text-gray-400 italic">...Empty...</div>
+        )}
       </div>
       <span>{isArray ? "]" : "}"}</span>
     </div>
