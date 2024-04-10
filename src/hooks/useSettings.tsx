@@ -11,6 +11,7 @@ const useSettings = () => {
         }
       }
     };
+    // @ts-ignore
     const setSettings = (setting) => {
       localStorage.setItem("json-settings", JSON.stringify(setting));
     };

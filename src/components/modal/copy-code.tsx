@@ -17,6 +17,7 @@ import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 
 const CopyCodeModal = () => {
+  // @ts-ignore
   const { jsonObject } = useData();
   const { actionModal, setActionModal } = useApp();
   const { type, id, show } = actionModal;

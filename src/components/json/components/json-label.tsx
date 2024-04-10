@@ -25,6 +25,7 @@ type ComponentProps = {
 
 const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
   const [isFieldEditalbe, setIsFieldEditable] = useState<boolean>(false);
+  // @ts-ignore
   const { jsonObject } = useData();
   const { setJsonObject } = useApp();
   const form = useForm();
@@ -34,11 +35,13 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
     setIsFieldEditable(true);
   };
 
+  // @ts-ignore
   const onSubmit = (value) => {
     setJsonObject(SetValue(jsonObject, id, value?.Value));
     setIsFieldEditable(false);
   };
 
+  // @ts-ignore
   const render = (fieldValue) => {
     console.log(fieldValue?.type);
     switch (fieldValue?.type.toLocaleLowerCase()) {
