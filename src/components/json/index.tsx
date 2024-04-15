@@ -9,6 +9,7 @@ const JsonParser: React.FC<any> = ({ data, isArray, level, parentId }) => {
       <div>
         {DataType == "array" ? (
           data.length > 0 ? (
+            // @ts-ignore
             data.map((item, idx) => {
               return (
                 <KeyValueRender
