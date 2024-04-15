@@ -26,6 +26,7 @@ enum ReducerTypes {
   selectRows = "SELECT_ROWS",
   setActionModal = "SET_ACTION_MODAL",
   initialTab = "INITIAT_TABS",
+  setLoading = "SET_LOADING",
 }
 
 const getData = (): Tabs[] => {
@@ -94,6 +95,7 @@ export type ReducerState = {
   tabModal: TabModal;
   selectedRow: string;
   actionModal: ActionModal;
+  loading: boolean;
 };
 export type AppState = ReducerState & {
   setCurrentTab: (tab: CurrentTab) => void;
@@ -110,6 +112,7 @@ export type AppState = ReducerState & {
   setAddTab: (value: string) => void;
   setSelectedRow: (value: string) => void;
   setActionModal: (value: ActionModal) => void;
+  setLoading: (value: boolean) => void;
 };
 
 const initialState: ReducerState = {
@@ -132,6 +135,7 @@ const initialState: ReducerState = {
   },
   selectedRow: "",
   currentSelectedTab: "uuid-sample-here",
+  loading: true,
 };
 
 const generateNewTab = (name: string): Tabs => {
@@ -160,6 +164,7 @@ const defaultValue: AppState = {
   setAddTab: () => {},
   setSelectedRow: () => {},
   setActionModal: () => {},
+  setLoading: () => {},
 };
 
 const AppContext = createContext(defaultValue);
@@ -292,6 +297,11 @@ const AppReducer = (state: ReducerState, action: AppAction): ReducerState => {
         ...state,
         actionModal: action.payload,
       };
+    case ReducerTypes?.setLoading:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     default:
       return state;
   }
@@ -307,29 +317,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     const data = getData();
     if (data?.length) {
       dispatch(CreateAction(ReducerTypes.initialTab, data));
+      dispatch(CreateAction(ReducerTypes.setLoading, false));
     }
   }, []);
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (getSettings) {
-        const setting = getSettings();
-        if (setting) {
-          if (setting?.saveToLocalStorage != undefined) {
-            if (setting?.saveToLocalStorage) {
-              try {
-                localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
-              } catch (err) {
-                toast({
-                  variant: "destructive",
-                  title: "Big JSON",
-                  description:
-                    "Your JSON is Very Big in Size, Please change the Setting to not save in Localstorage",
-                });
-              }
+        let Settings = getSettings();
+        if (Settings?.saveToLocalStorage != undefined) {
+          if (Settings?.saveToLocalStorage) {
+            try {
+              localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
+            } catch (err) {
+              toast({
+                variant: "destructive",
+                title: "Big JSON",
+                description:
+                  "Your JSON is Very Big in Size, Please change the Setting to not save in Localstorage",
+              });
             }
-          } else {
-            localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
           }
+        } else {
+          localStorage.setItem("tabs-data", JSON.stringify(state.tabs));
         }
       }
     }

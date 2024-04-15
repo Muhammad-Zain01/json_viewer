@@ -10,12 +10,12 @@ import {
 import { Settings } from "lucide-react";
 import { Switch } from "../ui/switch";
 import useSettings from "@/hooks/useSettings";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const SettingModal = () => {
   const { getSettings, setSettings } = useSettings();
   let setting = null;
-  const [saveToLocalStorage, setSaveToLocalStorage] = useState<boolean>(false);
+  const [saveToLocalStorage, setSaveToLocalStorage] = useState<boolean>(true);
 
   useEffect(() => {
     if (getSettings) {
