@@ -23,7 +23,7 @@ Additionally, the JSON Viewer offers support for multiple tabs, allowing users t
     <br />
 </div>
 
-[![Preview][product-screenshot]](https://typing-application.vercel.app/)
+[![Preview][product-screenshot]](https://json-viewer.muhammad-zain.com/)
 
 ### Built With
 
