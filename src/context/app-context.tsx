@@ -317,8 +317,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     const data = getData();
     if (data?.length) {
       dispatch(CreateAction(ReducerTypes.initialTab, data));
-      dispatch(CreateAction(ReducerTypes.setLoading, false));
     }
+    dispatch(CreateAction(ReducerTypes.setLoading, false));
   }, []);
   
   useEffect(() => {

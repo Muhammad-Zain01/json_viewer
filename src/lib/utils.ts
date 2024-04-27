@@ -199,3 +199,166 @@ export const getValueType = (value: any) => {
   if (typeof value == "string") return detectStringType(value);
   return typeof value;
 };
+
+export const formatToPHP: any = (value: any, indentLevel = 0) => {
+  const indent = " ".repeat(indentLevel * 4);
+  const subIndent = " ".repeat((indentLevel + 1) * 4);
+
+  if (typeof value === "string") {
+    return `'${value.replace(/'/g, "\\'")}'`;
+  } else if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "[]";
+    }
+    const arrayContents: any = value
+      .map((item) => `${subIndent}${formatToPHP(item, indentLevel + 1)}`)
+      .join(",\n");
+    return `[\n${arrayContents}\n${indent}]`;
+  } else if (typeof value === "object" && value !== null) {
+    const properties: any = Object.entries(value)
+      .map(([key, val]) => {
+        return `${subIndent}'${key}' => ${formatToPHP(val, indentLevel + 1)}`;
+      })
+      .join(",\n");
+    return `[\n${properties}\n${indent}]`;
+  } else if (typeof value === "number" || typeof value === "boolean") {
+    return value.toString();
+  } else {
+    return "null";
+  }
+};
+
+export const formatToJavaScript: any = (
+  value: any,
+  indentLevel: number = 0
+) => {
+  const indent = " ".repeat(indentLevel * 2);
+  const subIndent = " ".repeat((indentLevel + 1) * 2);
+  if (typeof value === "string") {
+    return `'${value}'`;
+  } else if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "[]";
+    }
+    const arrayContents = value
+      .map((item) => `${subIndent}${formatToJavaScript(item, indentLevel + 1)}`)
+      .join(",\n");
+    return `[\n${arrayContents}\n${indent}]`;
+  } else if (typeof value === "object" && value !== null) {
+    const properties = Object.entries(value)
+      .map(([key, val]) => {
+        return `${subIndent}${key}: ${formatToJavaScript(
+          val,
+          indentLevel + 1
+        )}`;
+      })
+      .join(",\n");
+    return `{\n${properties}\n${indent}}`;
+  } else {
+    return value.toString();
+  }
+};
+
+export const formatPython = (value: any) => {
+  return JSON.stringify(value, null, 2)
+    .replace(/null/g, "None")
+    .replace(/true/g, "True")
+    .replace(/false/g, "False");
+};
+
+export const formatToJava = (object: any) => {
+  const javaValue: any = (value: any) => {
+    if (typeof value === "string") {
+      return `"${value.replace(/"/g, '\\"')}"`;
+    } else if (typeof value === "number") {
+      return value;
+    } else if (typeof value === "boolean") {
+      return value;
+    } else if (Array.isArray(value)) {
+      const arrayElements = value.map((v) => javaValue(v)).join(", ");
+      return `Arrays.asList(${arrayElements})`;
+    } else if (typeof value === "object" && value !== null) {
+      return formatToJava(value);
+    } else {
+      return "null";
+    }
+  };
+
+  let result = "Map<String, Object> map = new HashMap<>();\n";
+  for (const [key, value] of Object.entries(object)) {
+    result += `map.put("${key}", ${javaValue(value)});\n`;
+  }
+  return result;
+};
+
+export const formatToRust = (object: any) => {
+  const rustValue: any = (value: any) => {
+    if (typeof value === "string") {
+      return `String::from("${value.replace(/"/g, '\\"')}")`;
+    } else if (typeof value === "number" || typeof value === "boolean") {
+      return value.toString();
+    } else if (Array.isArray(value)) {
+      const arrayContents = value.map((v) => rustValue(v)).join(", ");
+      return `vec![${arrayContents}]`;
+    } else if (typeof value === "object" && value !== null) {
+      return formatToRust(value);
+    } else {
+      return "serde_json::json!(null)";
+    }
+  };
+
+  let result =
+    "use std::collections::HashMap;\nuse serde_json::Value;\n\nlet mut map: HashMap<String, Value> = HashMap::new();\n";
+  for (const [key, value] of Object.entries(object)) {
+    result += `map.insert(String::from("${key}"), ${rustValue(value)});\n`;
+  }
+  return result;
+};
+
+export const formatToRuby = (object: string) => {
+  const rubyValue: any = (value: any) => {
+    if (typeof value === "string") {
+      return `'${value.replace(/'/g, "\\'")}'`;
+    } else if (typeof value === "number" || typeof value === "boolean") {
+      return value.toString();
+    } else if (Array.isArray(value)) {
+      const arrayContents = value.map((v) => rubyValue(v)).join(", ");
+      return `[${arrayContents}]`;
+    } else if (typeof value === "object" && value !== null) {
+      return formatToRuby(value);
+    } else {
+      return "nil";
+    }
+  };
+
+  let result = "{\n";
+  for (const [key, value] of Object.entries(object)) {
+    result += `  :${key} => ${rubyValue(value)},\n`;
+  }
+  result += "}";
+  return result;
+};
+
+export const formatToGo = (object: string) => {
+  const goValue: any = (value: any) => {
+    if (typeof value === "string") {
+      return `"${value.replace(/"/g, '\\"')}"`;
+    } else if (typeof value === "number" || typeof value === "boolean") {
+      return value.toString();
+    } else if (Array.isArray(value)) {
+      const arrayContents = value.map((v) => goValue(v)).join(", ");
+      return `[]interface{}{${arrayContents}}`;
+    } else if (typeof value === "object" && value !== null) {
+      return formatToGo(value);
+    } else {
+      return "nil";
+    }
+  };
+
+  let result = "map[string]interface{} {\n";
+  for (const [key, value] of Object.entries(object)) {
+    result += `  "${key}": ${goValue(value)},\n`;
+  }
+  result += "}";
+  return result;
+};
