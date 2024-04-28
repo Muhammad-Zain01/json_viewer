@@ -112,7 +112,7 @@ export type AppState = ReducerState & {
   setAddTab: (value: string) => void;
   setSelectedRow: (value: string) => void;
   setActionModal: (value: ActionModal) => void;
-  setLoading: (value: boolean) => void;
+  setLoading?: (value: boolean) => void;
 };
 
 const initialState: ReducerState = {
@@ -320,7 +320,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     dispatch(CreateAction(ReducerTypes.setLoading, false));
   }, []);
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (getSettings) {
@@ -392,7 +392,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const setActionModal = (actionModal: ActionModal) =>
     Action<ActionModal>(ReducerTypes?.setActionModal, actionModal);
 
-  const value = {
+  const value: AppState = {
     ...state,
     setCurrentTab,
     removeTab,

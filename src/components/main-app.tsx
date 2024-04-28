@@ -46,7 +46,7 @@ function MainApp() {
   );
 }
 
-function LoaderIcon(props) {
+function LoaderIcon(props: any) {
   return (
     <svg
       {...props}

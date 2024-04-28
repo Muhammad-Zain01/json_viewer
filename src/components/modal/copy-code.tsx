@@ -14,9 +14,6 @@ import { useApp } from "../../context/app-context";
 import useData from "@/hooks/useData";
 import {
   formatPython,
-  formatToC,
-  formatToCSharp,
-  formatToCpp,
   formatToGo,
   formatToJava,
   formatToJavaScript,
@@ -44,9 +41,6 @@ type Lang =
   | "python"
   | "php"
   | "java"
-  | "c"
-  | "c#"
-  | "c++"
   | "rust"
   | "ruby"
   | "go";
@@ -82,12 +76,6 @@ const CopyCodeModal = () => {
         return formatToPHP(jsonObject);
       case "java":
         return formatToJava(jsonObject);
-      case "c":
-        return formatToC(jsonObject);
-      case "c++":
-        return formatToCpp(jsonObject);
-      case "c#":
-        return formatToCSharp(jsonObject);
       case "rust":
         return formatToRust(jsonObject);
       case "ruby":
@@ -97,15 +85,6 @@ const CopyCodeModal = () => {
       default:
         return JSON.stringify(jsonObject, null, 2);
     }
-
-    //     formatToJava
-    // formatToC
-    // formatToCpp
-    // formatToCSharp
-    // formatToRust
-    // formatToRuby
-    // formatToGo
-    return "Null";
   };
 
   const onClickCopy = () => {
@@ -138,7 +117,7 @@ const CopyCodeModal = () => {
         <div>
           <Select
             defaultValue={currentLang}
-            onValueChange={(v: string) => setCurrentLang(v)}
+            onValueChange={(v: Lang) => setCurrentLang(v)}
           >
             <SelectTrigger className="w-full mt-2 ">
               <SelectValue placeholder="Select a Language" />
