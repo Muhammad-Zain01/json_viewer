@@ -10,7 +10,7 @@
 </div>
 
   <p align="center" style="text-align: justify;">
-The JSON Viewer is a user-friendly tool designed to simplify the process of viewing JSON data. With its intuitive interface, users can easily navigate through JSON structures, making it effortless to understand and analyze the data.
+This JSON Viewer is a user-friendly tool designed to simplify the process of viewing JSON data. With its intuitive interface, users can easily navigate through JSON structures, making it effortless to understand and analyze the data.
 
 One of the key features of the JSON Viewer is its functionality, which includes the ability to load JSON from both local files and URLs. This allows users to effortlessly import JSON data from various sources, enabling seamless integration with their workflows.
 
