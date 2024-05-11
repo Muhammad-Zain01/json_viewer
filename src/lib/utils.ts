@@ -18,7 +18,7 @@ const ParsingAlgo = (...args) => {
   }
   return args[0];
 };
-
+ 
 export const JsonParse = (jsonString: string) => {
   try {
     const pre_compiled = jsonString.replace(/\n/g, "").trim();
