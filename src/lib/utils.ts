@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 // @ts-ignore
 const ParsingAlgo = (...args) => {
   for (let i = 0; i < args.length; i++) {
+    console.log(args[i]);
     try {
       JSON.parse(args[i]);
       return args[i];
@@ -26,7 +27,11 @@ export const JsonParse = (jsonString: string) => {
       pre_compiled.replace(/,\s*([\]}])/g, "$1"),
       pre_compiled.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":'),
       pre_compiled.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ""),
-      pre_compiled.replace(/({|,)\s*([a-zA-Z0-9_]+?)\s*:/g, '$1 "$2":')
+      pre_compiled.replace(/({|,)\s*([a-zA-Z0-9_]+?)\s*:/g, '$1 "$2":'),
+      pre_compiled
+        .replace(/\\\\/g, "\\")
+        .replace(/\\"/g, '"')
+        .replace(/\\n/g, "\n")
     );
 
     return {
