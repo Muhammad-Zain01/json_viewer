@@ -23,6 +23,16 @@ jobs:
 
     - name: Build Next.js project
       run: npm run build
+    
+    - name: Check if secrets are parsed
+      run: |
+        if [ -z "${{ secrets.SSH_HOST }}" ] || [ -z "${{ secrets.SSH_USERNAME }}" ] || [ -z "${{ secrets.SSH_KEY }}" ] || [ -z "${{ secrets.DEPLOY_PATH }}" ]; then
+          echo "One or more secrets are missing!"
+          exit 1
+        else
+          echo "All secrets are parsed correctly."
+        fi
+
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
