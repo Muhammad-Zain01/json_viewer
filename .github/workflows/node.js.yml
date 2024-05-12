@@ -23,34 +23,11 @@ jobs:
 
     - name: Build Next.js project
       run: npm run build
-    
-    - name: Check if secrets are parsed
-      run: |
-        if [ -z "${{ secrets.SSH_HOST }}" ] || [ -z "${{ secrets.SSH_USERNAME }}" ] || [ -z "${{ secrets.SSH_KEY }}" ] || [ -z "${{ secrets.DEPLOY_PATH }}" ]; then
-          echo "One or more secrets are missing!"
-          exit 1
-        else
-          echo "All secrets are parsed correctly."
-        fi
 
-
-    - name: Deploy to server
-      uses: appleboy/scp-action@master
+    - name: Deploy to server via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        source: "out/*"
-        target: "${{ secrets.DEPLOY_PATH }}"
-
-    - name: Clean-up and restart server process (if necessary)
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd ${{ secrets.DEPLOY_PATH }}
-          ls
-          
-
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: out/
