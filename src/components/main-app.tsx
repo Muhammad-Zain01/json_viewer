@@ -7,19 +7,24 @@ import AlertBox from "./alert-box";
 import LoadJson from "./modal/load-json";
 import useData from "@/hooks/useData";
 import { Button } from "./ui/button";
-import { Plus, FileJson, Code, Braces } from "lucide-react";
+import { Plus, Braces } from "lucide-react";
 import { useStore } from "@/store";
 import { observer } from 'mobx-react-lite'
 import { useEffect } from "react";
 
 function MainApp() {
-  const { setTabModal, loading, init } = useStore('app')
+  const { tabs, setTabModal, loading, init, saveToLocalStorage } = useStore('app')
+  const data = useData();
 
   useEffect(() => {
     init()
   }, [])
 
-  const data = useData();
+  // Save tabs data to localStorage whenever tabs change
+  useEffect(() => {
+    console.log("XX")
+    saveToLocalStorage()
+  }, [tabs, saveToLocalStorage])
 
   if (loading) {
     return (
@@ -37,8 +42,11 @@ function MainApp() {
       {data && data?.currentTab ? (
         <div className="container p-3 border rounded-lg shadow-sm bg-white">
           <TabView />
-          {data?.currentTab == "viewer" && <JsonViewer />}
-          {data?.currentTab == "text" && <JsonTextBox />}
+          {data.currentTab === "text" ? (
+            <JsonTextBox />
+          ) : (
+            <JsonViewer />
+          )}
           <AlertBox />
           <LoadJson />
         </div>

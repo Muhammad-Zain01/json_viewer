@@ -7,7 +7,7 @@ import { useStore } from "@/store";
 import { observer } from 'mobx-react-lite'
 
 const JsonTextBox = () => {
-  const { setJsonText } = useStore('app')
+  const { setJsonText, saveToLocalStorage } = useStore('app')
   const data = useData();
 
   if (data) {
@@ -20,7 +20,8 @@ const JsonTextBox = () => {
             <FileJson size={18} />
           </div>
           <JsonEditor initialValue={jsonData} onChange={(value) => {
-            setJsonText(value)
+            setJsonText(value);
+            saveToLocalStorage();
           }} />
 
         </div>
