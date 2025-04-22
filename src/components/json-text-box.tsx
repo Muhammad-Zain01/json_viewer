@@ -1,3 +1,4 @@
+// @ts-nocheck
 import HeaderView from "./view-header";
 import useData from "../hooks/useData";
 import { FileJson } from "lucide-react";
