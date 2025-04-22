@@ -1,4 +1,3 @@
-import { useApp } from "../context/app-context";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,9 +7,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { useStore } from "@/store";
+import { observer } from 'mobx-react-lite'
 
 const AlertBox = () => {
-  const { alertBox, setAlertBox } = useApp();
+  const { setAlertBox, alertBox } = useStore('app')
 
   return (
     <AlertDialog open={alertBox?.show}>
@@ -31,4 +32,4 @@ const AlertBox = () => {
   );
 };
 
-export default AlertBox;
+export default observer(AlertBox);

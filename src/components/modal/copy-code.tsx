@@ -10,7 +10,6 @@ import {
   DialogFooter,
 } from "../ui/dialog";
 
-import { useApp } from "../../context/app-context";
 import useData from "@/hooks/useData";
 import {
   formatPython,
@@ -34,6 +33,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
+import { useStore } from "@/store";
+import { observer } from "mobx-react-lite";
 
 type Lang =
   | "json"
@@ -61,7 +62,8 @@ const CopyCodeModal = () => {
   // @ts-ignore
   const { jsonObject } = useData();
   const [currentLang, setCurrentLang] = useState<Lang>("json");
-  const { actionModal, setActionModal } = useApp();
+  const { actionModal, setActionModal } = useStore('app');
+
   const { type, id, show } = actionModal;
   const { toast } = useToast();
   const isShow = type == "copy" && show == true ? true : false;
@@ -156,4 +158,4 @@ const CopyCodeModal = () => {
   );
 };
 
-export default CopyCodeModal;
+export default observer(CopyCodeModal);

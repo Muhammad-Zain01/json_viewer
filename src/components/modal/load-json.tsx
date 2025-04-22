@@ -6,19 +6,19 @@ import {
   DialogTitle,
   DialogFooter,
 } from "../ui/dialog";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Input } from "../ui/input";
 import { useRef, useState } from "react";
-import { useApp } from "../../context/app-context";
 import { useToast } from "../ui/use-toast";
 import { EnterPress } from "../../lib/utils";
+import { useStore } from "@/store";
+import { observer } from "mobx-react-lite";
 
 const LoadJson = () => {
   const [currentState, setCurreentState] = useState<string>("from-file");
   const fileRef = useRef();
   const inputRef = useRef();
-  const { setJsonText, loadModal, setLoadModal } = useApp();
+  const { setJsonText, loadModal, setLoadModal } = useStore('app');
   const { toast } = useToast();
 
   const handleLoadFile = async () => {
@@ -129,4 +129,4 @@ const LoadJson = () => {
   );
 };
 
-export default LoadJson;
+export default observer(LoadJson);

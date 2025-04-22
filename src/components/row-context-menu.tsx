@@ -1,17 +1,18 @@
-import { Edit, Trash, ViewIcon } from "lucide-react";
+import { Trash } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from "./ui/context-menu";
-import { useApp } from "../context/app-context";
+import { useStore } from "@/store";
+import { observer } from 'mobx-react-lite'
 
 const RowContextMenu: React.FC<{ children: React.ReactNode; id: string }> = ({
   children,
   id,
 }) => {
-  const { setSelectedRow, selectedRow, setActionModal } = useApp();
+  const { setSelectedRow, selectedRow, setActionModal } = useStore('app')
 
   const ContextObj = [
     // {
@@ -51,4 +52,4 @@ const RowContextMenu: React.FC<{ children: React.ReactNode; id: string }> = ({
     </ContextMenu>
   );
 };
-export default RowContextMenu;
+export default observer(RowContextMenu);

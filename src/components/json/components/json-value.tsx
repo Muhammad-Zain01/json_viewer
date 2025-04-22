@@ -1,4 +1,5 @@
 import JsonParser from "..";
+import { useRef, useEffect, useState } from "react";
 
 type ComponentProps = {
   isOpen: boolean;
@@ -6,6 +7,8 @@ type ComponentProps = {
   level: number;
   isArray: boolean;
   row: string;
+  searchTerm?: string;
+  showOnlyMatches?: boolean;
 };
 
 const JsonObjectValue: React.FC<ComponentProps> = ({
@@ -13,19 +16,28 @@ const JsonObjectValue: React.FC<ComponentProps> = ({
   value,
   level,
   isArray,
-  row
+  row,
+  searchTerm = "",
+  showOnlyMatches = false
 }) => {
+  // Simple rendering without animations
   return (
-    <div className=" cursor-pointer">
+    <div className="cursor-pointer">
       {isOpen ? (
-        <JsonParser
-          data={value}
-          isArray={Array.isArray(value)}
-          level={level + 1}
-          parentId={row}
-        />
+        <div>
+          <JsonParser
+            data={value}
+            isArray={Array.isArray(value)}
+            level={level + 1}
+            parentId={row}
+            searchTerm={searchTerm}
+            showOnlyMatches={showOnlyMatches}
+          />
+        </div>
       ) : (
-        <span>{isArray ? "[...]" : "{...}"} </span>
+        <span>
+          {isArray ? "[...]" : "{...}"} 
+        </span>
       )}
     </div>
   );

@@ -14,20 +14,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { useApp } from "@/context/app-context";
 import useData from "@/hooks/useData";
 import { SetValue, getValueType } from "@/lib/utils";
+import { useStore } from "@/store";
 import { Save } from "lucide-react";
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type ComponentProps = {
   value: any;
   id: string;
+  searchTerm?: string;
 };
 
-const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
+const JsonValue: React.FC<ComponentProps> = ({ value, id, searchTerm = "" }): JSX.Element => {
   const [isFieldEditalbe, setIsFieldEditable] = useState<boolean>(false);
   // @ts-ignore
   const { jsonObject } = useData();
-  const { setJsonObject } = useApp();
+  const { setJsonObject } = useStore('app')
+  
   const form = useForm();
   const FieldType = getValueType(value);
 
@@ -180,6 +184,11 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
     }
   };
 
+  // Check if value matches search term for highlighting
+  const isHighlighted = searchTerm && 
+    !["object", "array"].includes(FieldType) && 
+    String(value).toLowerCase().includes(searchTerm.toLowerCase());
+
   const formData = {
     type: FieldType,
     name: "Value",
@@ -190,7 +199,9 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
     <>
       {!isFieldEditalbe ? (
         <span
-          className="p-[3px] rounded px-[6px] cursor-pointer border border-white hover:border-gray-300"
+          className={`p-[3px] rounded px-[6px] cursor-pointer border border-white hover:border-gray-300 ${
+            isHighlighted ? "bg-yellow-100 text-yellow-800 font-medium border-yellow-200" : ""
+          }`}
           onClick={onFieldClick}
         >
           {String(value)}
@@ -215,4 +226,4 @@ const JsonValue: React.FC<ComponentProps> = ({ value, id }): JSX.Element => {
   );
 };
 
-export default JsonValue;
+export default observer(JsonValue);

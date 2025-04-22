@@ -1,3 +1,4 @@
+import { useStore } from "@/store";
 import { useApp } from "../../context/app-context";
 import useData from "../../hooks/useData";
 import { RemoveObject } from "../../lib/utils";
@@ -11,9 +12,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
+import { observer } from 'mobx-react-lite'
 
 const RemoveModal = () => {
-  const { setActionModal, actionModal, setJsonObject } = useApp();
+  const { setActionModal, actionModal, setJsonObject } = useStore('app');
   // @ts-ignore
   const { jsonObject } = useData();
   const { type, show, id } = actionModal;
@@ -50,4 +52,4 @@ const RemoveModal = () => {
   );
 };
 
-export default RemoveModal;
+export default observer(RemoveModal);

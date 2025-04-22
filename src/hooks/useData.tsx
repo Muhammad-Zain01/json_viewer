@@ -1,8 +1,9 @@
 import { useMemo } from "react";
-import { useApp } from "../context/app-context";
+import { useStore } from "@/store";
 
 const useData = () => {
-  const { tabs, currentSelectedTab, setCurrentSelectedTab } = useApp();
+  const { tabs, currentSelectedTab, setCurrentSelectedTab } = useStore('app');
+
   return useMemo(() => {
     if (tabs.length) {
       let data = tabs.find((tab) => tab.id == currentSelectedTab);

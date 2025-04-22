@@ -20,16 +20,17 @@ export const metadata: Metadata = {
     "online tool",
   ],
   robots: "index, follow",
+  themeColor: "#ffffff",
   openGraph: {
     images: [
       {
         url: "https://json-viewer.muhammad-zain.com/banner.png",
-        alt: "Banner",
+        alt: "JSON Viewer Banner",
       },
     ],
     url: "https://json-viewer.muhammad-zain.com/",
     description:
-      "Engage with Meyka for instant AI-driven financial insights and stock market analysis. Access personalized and accurate market data through our interactive chat.",
+      "JSON Viewer and Formatter - Efficiently view and edit JSON data with our online tool. Features include real-time visualization, syntax highlighting, and tree view for easy debugging and data manipulation.",
     locale: "en_US",
     type: "website",
   },
