@@ -4,8 +4,9 @@ import { FormatJsonString } from "../lib/utils";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { observer } from 'mobx-react-lite'
-import { Copy, Clipboard, Trash2, FileCode, Code, RefreshCw, Database } from "lucide-react";
+import { Copy, Clipboard, Trash2, FileCode, Code, RefreshCw, Database, FileXIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import JSONParser from "@/lib/json-fix";
 
 const HeaderView = () => {
   const { setJsonText, setLoadModal } = useStore('app')
@@ -51,6 +52,7 @@ const HeaderView = () => {
   const handleRemoveWhiteSpace = () => {
     setJsonText(jsonData.replace(/\s+/g, ""));
   };
+
   const handleFormatJson = () => {
     const Formated = FormatJsonString(jsonData);
     if (Formated?.success) {
@@ -108,6 +110,25 @@ const HeaderView = () => {
     });
   };
 
+
+  const handleFixJSON = () => {
+    try {
+      const parser = new JSONParser(jsonData);
+      const result = parser.parse()
+      const Formated = FormatJsonString(JSON.stringify(result));
+      setJsonText(Formated.json);
+      toast({
+        title: "JSON fixed",
+        description: "Your JSON structure has been fixed",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Invalid JSON",
+        description: "Your JSON structure is invalid",
+      });
+    }
+  }
   return (
     <TooltipProvider>
       <div className="mb-2 border rounded-md p-2 bg-white shadow-sm">
@@ -221,6 +242,21 @@ const HeaderView = () => {
                 >
                   <Database className="h-3.5 w-3.5" />
                   <span>Sample JSON</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-800 text-white">Load sample JSON data</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size={"sm"}
+                  variant="outline"
+                  className="text-xs font-medium flex items-center gap-1.5 h-8 hover:bg-gray-100 border-gray-300 text-gray-700"
+                  onClick={handleFixJSON}
+                >
+                  <FileXIcon className="h-3.5 w-3.5" />
+                  <span>Fix JSON</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="bg-gray-800 text-white">Load sample JSON data</TooltipContent>
